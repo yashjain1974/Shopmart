@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native';
 import { Card, Button, Icon } from 'react-native-elements';
+import HeaderPage from './Header';
 
 const data = {
   categories: [
@@ -32,10 +33,13 @@ const data = {
 
 const HomePage = () => {
   return (
+    <><HeaderPage />
+        
     <ScrollView style={styles.container}>
       {data.categories.map((category, index) => (
         <View key={index} style={styles.categoryContainer}>
           <Text style={styles.categoryTitle}>{category.name}</Text>
+          
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {category.items.map((item) => (
               <Card key={item.id} containerStyle={styles.card}>
@@ -55,6 +59,7 @@ const HomePage = () => {
         </View>
       ))}
     </ScrollView>
+    </>
   );
 };
 

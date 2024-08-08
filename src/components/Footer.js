@@ -10,19 +10,19 @@ const Footer = () => {
     <View style={styles.footer}>
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Home')}>
         <Icon name="home" type="feather" color="#fff" />
-        <Text style={styles.footerButtonText}>Home</Text>
+        
       </TouchableOpacity>
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Reel')}>
-        <Icon name="video" type="feather" color="#fff" />
-        <Text style={styles.footerButtonText}>Reels</Text>
+        <Icon name="film" type="feather" color="#fff" />
+        {/* <Text style={styles.footerButtonText}>Reels</Text> */}
       </TouchableOpacity>
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Profile')}>
         <Icon name="user" type="feather" color="#fff" />
-        <Text style={styles.footerButtonText}>Profile</Text>
+        {/* <Text style={styles.footerButtonText}>Profile</Text> */}
       </TouchableOpacity>
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Settings')}>
         <Icon name="settings" type="feather" color="#fff" />
-        <Text style={styles.footerButtonText}>Settings</Text>
+        {/* <Text style={styles.footerButtonText}>Settings</Text> */}
       </TouchableOpacity>
     </View>
   );
@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#000',
-    paddingVertical: 10,
+    paddingVertical: 18,
+    borderRadius:5,
   },
   footerButton: {
     justifyContent: 'center',

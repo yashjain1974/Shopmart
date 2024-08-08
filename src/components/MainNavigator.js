@@ -13,7 +13,6 @@ const MainNavigator = () => {
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
-        <HeaderPage />
         <View style={styles.content}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={HomePage} />
