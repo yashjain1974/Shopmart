@@ -1,64 +1,62 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, StyleSheet } from 'react-native';
-import { Card, Button, Icon } from 'react-native-elements';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import Carousel from './Carousel';
 import HeaderPage from './Header';
 
-const data = {
-  categories: [
-    {
-      name: 'Clothes',
-      items: [
-        { id: 1, name: 'T-Shirt', price: '$20', image: require('../../assets/myT.jpg') },
-        { id: 2, name: 'Jeans', price: '$40', image: require('../../assets/myT.jpg') },
-        { id: 3, name: 'Jacket', price: '$60', image: require('../../assets/myT.jpg') },
-      ],
-    },
-    {
-      name: 'Accessories',
-      items: [
-        { id: 4, name: 'Watch', price: '$50', image: require('../../assets/myT.jpg') },
-        { id: 5, name: 'Sunglasses', price: '$30', image: require('../../assets/myT.jpg') },
-        { id: 6, name: 'Hat', price: '$25', image: require('../../assets/myT.jpg') },
-      ],
-    },
-    {
-      name: 'Footwear',
-      items: [
-        { id: 7, name: 'Sneakers', price: '$80', image: require('../../assets/myT.jpg') },
-        { id: 8, name: 'Sandals', price: '$35', image: require('../../assets/myT.jpg') },
-      ],
-    },
-  ],
-};
+const categories = ['Departments', 'Grocery', 'Tech', 'Fashion', 'Home'];
 
-const HomePage = () => {
+const featuredBanners = [
+  { id: '1', title: 'Gifts to love', image: 'https://cdn.runrepeat.com/storage/gallery/buying_guide_primary/17/17-best-nike-running-shoes-15275034-960.jpg', subtitle: 'Shop now' },
+  { id: '2', title: 'Score big', image: 'https://images.unsplash.com/photo-1561414927-6d86591d0c4f', subtitle: 'Shop all' },
+  { id: '3', title: 'Get outside', image: 'https://www.sennheiser.com/globalassets/digizuite/45735-en-hd_490_pro_product_shot_in_use_axis_audio_69.jpg/SennheiserFullWidth', subtitle: 'Shop now' },
+  { id: '4', title: 'Keep it cool', image: 'https://shopperstore.in/public/uploads/all/2MDn6QkeObx8n9FiEsrvNGu3sNn7lmPQfQXtfw7N.jpg', subtitle: 'Shop now' },
+  { id: '5', title: 'Cook up a win', image: 'https://cdn.runrepeat.com/storage/gallery/buying_guide_primary/17/17-best-nike-running-shoes-15275034-960.jpg', subtitle: 'Shop kitchen' },
+];
+
+const HomePage = ({ navigation }) => {
   return (
-    <><HeaderPage />
-        
-    <ScrollView style={styles.container}>
-      {data.categories.map((category, index) => (
-        <View key={index} style={styles.categoryContainer}>
-          <Text style={styles.categoryTitle}>{category.name}</Text>
-          
+    <>
+      <HeaderPage />
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <SearchBar
+            placeholder="Search Walmart"
+            lightTheme
+            round
+            containerStyle={styles.searchBar}
+            inputContainerStyle={styles.searchInput}
+          />
+        </View>
+
+        <View style={styles.tabsContainer}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {category.items.map((item) => (
-              <Card key={item.id} containerStyle={styles.card}>
-                <Image source={item.image} style={styles.image} />
-                <View style={styles.cardContent}>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                  <Text style={styles.itemPrice}>{item.price}</Text>
-                  <Button
-                    icon={<Icon name="shopping-cart" color="#ffffff" />}
-                    buttonStyle={styles.button}
-                    title="Add to Cart"
-                  />
-                </View>
-              </Card>
+            {categories.map((category) => (
+              <TouchableOpacity key={category} style={styles.tab}>
+                <Text style={styles.tabText}>{category}</Text>
+              </TouchableOpacity>
             ))}
+           
           </ScrollView>
         </View>
-      ))}
-    </ScrollView>
+
+        <Carousel data={featuredBanners.slice(0, 3)} />
+
+        <ScrollView style={styles.scrollContainer}>
+        
+          <View style={styles.bannerGrid}>
+            {featuredBanners.map((banner) => (
+              <TouchableOpacity key={banner.id} style={styles.bannerContainer}>
+                <Image source={{ uri: banner.image }} style={styles.bannerImage} />
+                <View style={styles.bannerTextContainer}>
+                  <Text style={styles.bannerTitle}>{banner.title}</Text>
+                  <Text style={styles.bannerSubtitle}>{banner.subtitle}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
     </>
   );
 };
@@ -66,48 +64,66 @@ const HomePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    padding: 10,
+    backgroundColor: '#f8f9fa',
   },
-  categoryContainer: {
-    marginBottom: 20,
+  header: {
+    paddingTop: 6,
+    paddingHorizontal: 15,
+    backgroundColor: 'black',
   },
-  categoryTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  searchBar: {
+    backgroundColor: 'transparent',
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
   },
-  card: {
-    width: 200,
-    marginHorizontal: 10,
-    padding: 0,
-    borderRadius: 8,
+  searchInput: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+  },
+  tabsContainer: {
+    paddingVertical: 10,
+    backgroundColor: 'black',
+  },
+  tab: {
+    marginHorizontal: 15,
+  },
+  tabText: {
+    fontSize: 16,
+    color: '#fff',
+  },
+  scrollContainer: {
+    padding: 15,
+  },
+  bannerGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  bannerContainer: {
+    height: 259,
+    width: '48%',
+    marginBottom: 15,
+    backgroundColor: '#fff',
+    borderRadius: 10,
     overflow: 'hidden',
   },
-  image: {
+  bannerImage: {
     width: '100%',
-    height: 200,
+    height: 259,
   },
-  cardContent: {
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+  bannerTextContainer: {
+    position: 'absolute',
+    bottom: 15,
+    left: 15,
   },
-  itemName: {
-    fontSize: 16,
+  bannerTitle: {
+    fontSize: 18,
+    color: '#fff',
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 10,
   },
-  itemPrice: {
+  bannerSubtitle: {
     fontSize: 14,
-    textAlign: 'center',
-    color: '#888',
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: '#6200ea',
-    borderRadius: 5,
+    color: '#fff',
   },
 });
 

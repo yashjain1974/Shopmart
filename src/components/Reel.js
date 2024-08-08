@@ -16,19 +16,19 @@ const { width, height } = Dimensions.get("window");
 const videos = [
   {
     id: "1",
-    uri: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
+    uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723139085/lk9tfab7ogctesq7kdhq.mp4",
     title: "Sample Video 1",
     description: "A short sample video.",
   },
   {
     id: "2",
-    uri: "https://samplelib.com/lib/preview/mp4/sample-10s.mp4",
+    uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723140997/Find_the_beauty_in_everything_cinematography_filmmakers_filmmakersworld_cinematicreels_sonyalpha_cpmawh.mp4",
     title: "Sample Video 2",
     description: "Another short sample video.",
   },
   {
     id: "3",
-    uri: "https://www.w3schools.com/html/mov_bbb.mp4",
+    uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723142877/We_re_here_to_remind_you_neco2u.mp4",
     title: "Big Buck Bunny",
     description: "A fun animated video.",
   },
