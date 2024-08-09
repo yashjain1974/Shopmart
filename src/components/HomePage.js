@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import Carousel from './Carousel';
 import HeaderPage from './Header';
 
 const categories = ['Departments', 'Grocery', 'Tech', 'Fashion', 'Home'];
@@ -36,14 +35,22 @@ const HomePage = ({ navigation }) => {
                 <Text style={styles.tabText}>{category}</Text>
               </TouchableOpacity>
             ))}
-           
           </ScrollView>
         </View>
 
-        <Carousel data={featuredBanners.slice(0, 3)} />
-
         <ScrollView style={styles.scrollContainer}>
-        
+          <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
+            {featuredBanners.slice(0, 3).map((banner) => (
+              <TouchableOpacity key={banner.id} style={styles.carouselItem}>
+                <Image source={{ uri: banner.image }} style={styles.carouselImage} />
+                <View style={styles.carouselTextContainer}>
+                  <Text style={styles.carouselTitle}>{banner.title}</Text>
+                  <Text style={styles.carouselSubtitle}>{banner.subtitle}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+          
           <View style={styles.bannerGrid}>
             {featuredBanners.map((banner) => (
               <TouchableOpacity key={banner.id} style={styles.bannerContainer}>
@@ -93,6 +100,31 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 15,
+  },
+  carouselItem: {
+    width: 300,
+    height: 200,
+    marginRight: 10,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  carouselImage: {
+    width: '100%',
+    height: '100%',
+  },
+  carouselTextContainer: {
+    position: 'absolute',
+    bottom: 15,
+    left: 15,
+  },
+  carouselTitle: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  carouselSubtitle: {
+    fontSize: 14,
+    color: '#fff',
   },
   bannerGrid: {
     flexDirection: 'row',
