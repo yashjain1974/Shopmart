@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   carouselItem: {
-    width: 300,
+    width: 390,
     height: 200,
     marginRight: 10,
     borderRadius: 10,
