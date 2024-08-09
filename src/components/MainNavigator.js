@@ -6,7 +6,7 @@ import HomePage from './HomePage';
 import ReelList from './Reel';
 import HeaderPage from './Header';
 import FooterPage from './Footer';
-
+import CategoryPage from './CategoryPage';
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
@@ -17,6 +17,7 @@ const MainNavigator = () => {
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={HomePage} />
             <Stack.Screen name="Reel" component={ReelList} />
+            <Stack.Screen name="Category" component={CategoryPage} />
             
           </Stack.Navigator>
         </View>

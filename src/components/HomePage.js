@@ -31,7 +31,11 @@ const HomePage = ({ navigation }) => {
         <View style={styles.tabsContainer}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {categories.map((category) => (
-              <TouchableOpacity key={category} style={styles.tab}>
+              <TouchableOpacity
+                key={category}
+                style={styles.tab}
+                onPress={() => navigation.navigate('Category', { category })}
+              >
                 <Text style={styles.tabText}>{category}</Text>
               </TouchableOpacity>
             ))}

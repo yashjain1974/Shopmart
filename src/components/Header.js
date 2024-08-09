@@ -7,9 +7,9 @@ const HeaderPage = () => {
     <View style={styles.header}>
       <Text style={styles.headerTitle}>ShopMart App</Text>
       <View style={styles.headerButtons}>
-        <TouchableOpacity style={styles.headerButton}>
+        {/* <TouchableOpacity style={styles.headerButton}>
           <Icon name="search" type="feather" color="#fff" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.headerButton}>
           <Icon name="shopping-cart" type="feather" color="#fff" />
         </TouchableOpacity>
