@@ -39,7 +39,7 @@ const HomePage = ({ navigation }) => {
         </View>
 
         <ScrollView style={styles.scrollContainer}>
-          <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
+          <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={styles.carouselContainer}>
             {featuredBanners.slice(0, 3).map((banner) => (
               <TouchableOpacity key={banner.id} style={styles.carouselItem}>
                 <Image source={{ uri: banner.image }} style={styles.carouselImage} />
@@ -74,9 +74,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f9fa',
   },
   header: {
-    paddingTop: 6,
+    paddingTop: 20,
     paddingHorizontal: 15,
-    backgroundColor: 'black',
+    backgroundColor: '#000',
   },
   searchBar: {
     backgroundColor: 'transparent',
@@ -85,14 +85,19 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 20,
+    paddingHorizontal: 10,
   },
   tabsContainer: {
     paddingVertical: 10,
-    backgroundColor: 'black',
+    backgroundColor: '#000',
   },
   tab: {
-    marginHorizontal: 15,
+    marginHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    backgroundColor: '#0071ce',
+    borderRadius: 20,
   },
   tabText: {
     fontSize: 16,
@@ -100,6 +105,10 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 15,
+    backgroundColor: '#f8f9fa',
+  },
+  carouselContainer: {
+    marginBottom: 15,
   },
   carouselItem: {
     width: 300,
@@ -138,10 +147,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     overflow: 'hidden',
+    elevation: 3, // Shadow for Android
+    shadowColor: '#000', // Shadow for iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
   },
   bannerImage: {
     width: '100%',
-    height: 259,
+    height: '100%',
   },
   bannerTextContainer: {
     position: 'absolute',
