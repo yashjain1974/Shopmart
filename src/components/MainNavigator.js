@@ -7,6 +7,8 @@ import ReelList from './Reel';
 import HeaderPage from './Header';
 import FooterPage from './Footer';
 import CategoryPage from './CategoryPage';
+import ProductDetailPage from './ProductDetailPage';
+import ProfilePage from './ProfilePage';
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
@@ -18,6 +20,9 @@ const MainNavigator = () => {
             <Stack.Screen name="Home" component={HomePage} />
             <Stack.Screen name="Reel" component={ReelList} />
             <Stack.Screen name="Category" component={CategoryPage} />
+            <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
+            <Stack.Screen name="ProfilePage" component={ProfilePage} />
+        
             
           </Stack.Navigator>
         </View>

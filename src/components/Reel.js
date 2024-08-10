@@ -108,7 +108,7 @@ const RenderItem = React.memo(
                 containerStyle={styles.icon}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={onShowProducts}>
+            <TouchableOpacity onPress={() => onShowProducts(index)}>
               <Icon
                 name="shopping-bag"
                 type="feather"
@@ -157,6 +157,16 @@ const ReelList = () => {
     [isMuted]
   );
 
+  const onShowProducts = useCallback(
+    (index) => {
+      if (videoRefs.current[index]) {
+        videoRefs.current[index].pauseAsync();
+      }
+      setIsModalVisible(true);
+    },
+    []
+  );
+
   const renderItem = useCallback(
     ({ item, index }) => (
       <RenderItem
@@ -166,7 +176,7 @@ const ReelList = () => {
         videoRefs={videoRefs}
         isMuted={isMuted}
         onMutePress={onMutePress}
-        onShowProducts={() => setIsModalVisible(true)}
+        onShowProducts={onShowProducts}
       />
     ),
     [currentVideoIndex, isMuted]

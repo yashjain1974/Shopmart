@@ -16,7 +16,7 @@ const Footer = () => {
         <Icon name="film" type="feather" color="#fff" />
         {/* <Text style={styles.footerButtonText}>Reels</Text> */}
       </TouchableOpacity>
-      <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Profile')}>
+      <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('ProfilePage')}>
         <Icon name="user" type="feather" color="#fff" />
         {/* <Text style={styles.footerButtonText}>Profile</Text> */}
       </TouchableOpacity>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import HeaderPage from './Header';
-
+import { useNavigation } from '@react-navigation/native';
 const { width } = Dimensions.get('window');
 
 const products = {
@@ -28,7 +28,7 @@ const CategoryPage = ({ route }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const items = products[category] || [];
   const filteredItems = items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-
+  const navigation = useNavigation();
   const renderBanner = ({ item }) => (
     <View style={styles.bannerContainer}>
       <Image source={{ uri: item.image }} style={styles.bannerImage} />
@@ -69,7 +69,10 @@ const CategoryPage = ({ route }) => {
             </>
           }
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productCard}>
+            <TouchableOpacity
+              style={styles.productCard}
+              onPress={() => navigation.navigate('ProductDetail', { product: item })}
+            >
               {item.isNew && <Text style={styles.newBadge}>NEW</Text>}
               <Image source={{ uri: item.image }} style={styles.productImage} />
               <Text style={styles.productName}>{item.name}</Text>
