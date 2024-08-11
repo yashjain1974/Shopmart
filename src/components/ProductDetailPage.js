@@ -46,7 +46,7 @@ const ProductDetailPage = ({ route }) => {
             <Icon name="share" type="material" style={styles.iconMargin} />
           </View>
         </View>
-
+       
         <FlatList
           data={productImages}
           renderItem={renderProductImage}
@@ -56,90 +56,92 @@ const ProductDetailPage = ({ route }) => {
           showsHorizontalScrollIndicator={false}
           style={styles.carousel}
         />
+ 
+        <View style={styles.productInfoContainer}>
+          <Text style={styles.productTitle}>{product.name}</Text>
+          <Text style={styles.productPrice}>{product.price}</Text>
+          <Text style={styles.productColor}>Color: {product.color}</Text>
 
-<View style={styles.productInfoContainer}>
-  <Text style={styles.productTitle}>{product.name}</Text>
-  <Text style={styles.productPrice}>{product.price}</Text>
-  <Text style={styles.productColor}>Color: {product.color}</Text>
+          <View style={styles.colorOptions}>
+            <View style={[styles.colorCircle, { backgroundColor: 'blue' }]} />
+            <View style={[styles.colorCircle, { backgroundColor: 'yellow' }]} />
+            <View style={[styles.colorCircle, { backgroundColor: 'red' }]} />
+          </View>
+          <TouchableOpacity
+        style={styles.contentCreatorButton}
+        onPress={() => navigation.navigate('ContentUpload')}
+      >
+            <Text style={styles.contentCreatorText}>Create Content & Earn Perks</Text>
+            <Text style={styles.contentCreatorSubText}>Earn points or e-wallet cash for contributing content</Text>
+          </TouchableOpacity>
 
-  <View style={styles.colorOptions}>
-    <View style={[styles.colorCircle, { backgroundColor: 'blue' }]} />
-    <View style={[styles.colorCircle, { backgroundColor: 'yellow' }]} />
-    <View style={[styles.colorCircle, { backgroundColor: 'red' }]} />
-  </View>
+          <View style={styles.productDetailsContainer}>
+            <Text style={styles.productDetailsTitle}>Product Details</Text>
+            <View style={styles.productDetailItemContainer}>
+              <Icon name="check" type="feather" color="#8A2BE2" size={16} />
+              <Text style={styles.productDetailItem}>Horsebit zipped track jacket</Text>
+            </View>
+            <View style={styles.productDetailItemContainer}>
+              <Icon name="check" type="feather" color="#8A2BE2" size={16} />
+              <Text style={styles.productDetailItem}>Classic collar</Text>
+            </View>
+            <View style={styles.productDetailItemContainer}>
+              <Icon name="check" type="feather" color="#8A2BE2" size={16} />
+              <Text style={styles.productDetailItem}>Chest patch pocket</Text>
+            </View>
+            <View style={styles.productDetailItemContainer}>
+              <Icon name="check" type="feather" color="#8A2BE2" size={16} />
+              <Text style={styles.productDetailItem}>Long sleeves</Text>
+            </View>
+            <View style={styles.productDetailItemContainer}>
+              <Icon name="check" type="feather" color="#8A2BE2" size={16} />
+              <Text style={styles.productDetailItem}>Front zip closure</Text>
+            </View>
+            <View style={styles.productDetailItemContainer}>
+              <Icon name="check" type="feather" color="#8A2BE2" size={16} />
+              <Text style={styles.productDetailItem}>Two welt pockets on the sides</Text>
+            </View>
 
-  
+            <Text style={styles.productDetailsTitle}>Composition</Text>
+            <Text style={styles.productDetailItem}>Outer Material: Cotton 100%, Calf Leather 100%</Text>
+            <Text style={styles.productDetailItem}>Lining: Polyester 100%</Text>
 
-  <View style={styles.productDetailsContainer}>
-    <Text style={styles.productDetailsTitle}>Product Details</Text>
-    <View style={styles.productDetailItemContainer}>
-      <Icon name="check" type="feather" color="#8A2BE2" size={16} />
-      <Text style={styles.productDetailItem}>Horsebit zipped track jacket</Text>
-    </View>
-    <View style={styles.productDetailItemContainer}>
-      <Icon name="check" type="feather" color="#8A2BE2" size={16} />
-      <Text style={styles.productDetailItem}>Classic collar</Text>
-    </View>
-    <View style={styles.productDetailItemContainer}>
-      <Icon name="check" type="feather" color="#8A2BE2" size={16} />
-      <Text style={styles.productDetailItem}>Chest patch pocket</Text>
-    </View>
-    <View style={styles.productDetailItemContainer}>
-      <Icon name="check" type="feather" color="#8A2BE2" size={16} />
-      <Text style={styles.productDetailItem}>Long sleeves</Text>
-    </View>
-    <View style={styles.productDetailItemContainer}>
-      <Icon name="check" type="feather" color="#8A2BE2" size={16} />
-      <Text style={styles.productDetailItem}>Front zip closure</Text>
-    </View>
-    <View style={styles.productDetailItemContainer}>
-      <Icon name="check" type="feather" color="#8A2BE2" size={16} />
-      <Text style={styles.productDetailItem}>Two welt pockets on the sides</Text>
-    </View>
+            <Text style={styles.productDetailsTitle}>Size and Fit</Text>
+            <Text style={styles.productDetailItem}>Fits true to size. Take your normal size</Text>
+            <Text style={styles.productDetailItem}>Mid-weight, slightly stretchy fabric</Text>
+            <Text style={styles.productDetailItem}>The model is wearing a size larger</Text>
+          </View>
 
-    <Text style={styles.productDetailsTitle}>Composition</Text>
-    <Text style={styles.productDetailItem}>Outer Material: Cotton 100%, Calf Leather 100%</Text>
-    <Text style={styles.productDetailItem}>Lining: Polyester 100%</Text>
+          <View style={styles.recommendedContainer}>
+            <Text style={styles.recommendedTitle}>Wear it with</Text>
+            <FlatList
+              data={recommendedItems}
+              renderItem={renderRecommendedItem}
+              keyExtractor={item => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
 
-    <Text style={styles.productDetailsTitle}>Size and Fit</Text>
-    <Text style={styles.productDetailItem}>Fits true to size. Take your normal size</Text>
-    <Text style={styles.productDetailItem}>Mid-weight, slightly stretchy fabric</Text>
-    <Text style={styles.productDetailItem}>The model is wearing a size larger</Text>
-  </View>
-
-
-       
-
-        <View style={styles.recommendedContainer}>
-          <Text style={styles.recommendedTitle}>Wear it with</Text>
-          <FlatList
-            data={recommendedItems}
-            renderItem={renderRecommendedItem}
-            keyExtractor={item => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          />
+          
         </View>
-        </View>
-        </ScrollView>
-        <View style={styles.footer}>
+      </ScrollView>
+      <View style={styles.footer}>
         <Button
           title="Add to Cart"
           buttonStyle={styles.addToCartFooterButton}
           containerStyle={styles.addToCartFooterContainer}
         />
       </View>
-     
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    
     flex: 1,
     backgroundColor: '#f9f9f9',
-    marginTop:50
+    marginTop: 50,
   },
   headerIcons: {
     flexDirection: 'row',
@@ -162,7 +164,6 @@ const styles = StyleSheet.create({
     height: 300,
     resizeMode: 'contain',
     marginTop: 10,
-    
   },
   productInfoContainer: {
     paddingHorizontal: 20,
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
   productDetailItem: {
     fontSize: 14,
     color: '#666',
-    marginBottom: 5,
+    marginLeft: 10,
     lineHeight: 22,
   },
   sizeGuideButton: {
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
     marginTop: 20,
-    marginBottom:100,
+    marginBottom: 100,
   },
   recommendedTitle: {
     fontSize: 18,
@@ -262,19 +263,35 @@ const styles = StyleSheet.create({
     width: 100,
     height: 120,
     borderRadius: 10,
-    marginBottom: 5,
+    marginBottom: 0,
   },
   recommendedName: {
     fontSize: 14,
     color: '#333',
   },
- 
-
-
   recommendedPrice: {
     fontSize: 14,
     color: '#8A2BE2',
     fontWeight: 'bold',
+  },
+  contentCreatorButton: {
+    backgroundColor: '#F5F5F5',
+    padding: 15,
+    borderRadius: 15,
+    marginTop: 10,
+    alignItems: 'center',
+    elevation: 3,
+    marginBottom: 10,
+  },
+  contentCreatorText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#8A2BE2',
+  },
+  contentCreatorSubText: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
   },
   footer: {
     position: 'absolute',
@@ -295,7 +312,6 @@ const styles = StyleSheet.create({
   addToCartFooterContainer: {
     width: '100%',
   },
-  
 });
 
 export default ProductDetailPage;
