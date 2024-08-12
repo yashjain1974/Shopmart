@@ -2,12 +2,16 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-
+import { LinearGradient } from 'expo-linear-gradient';
 const Footer = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.footer}>
+    <LinearGradient
+    colors={['#3498db', '#2980b9']}
+    style={styles.footer}
+  >
+    
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Home')}>
         <Icon name="home" type="feather" color="#fff" />
         
@@ -20,11 +24,9 @@ const Footer = () => {
         <Icon name="user" type="feather" color="#fff" />
         {/* <Text style={styles.footerButtonText}>Profile</Text> */}
       </TouchableOpacity>
-      <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Settings')}>
-        <Icon name="settings" type="feather" color="#fff" />
-        {/* <Text style={styles.footerButtonText}>Settings</Text> */}
-      </TouchableOpacity>
-    </View>
+      
+    
+    </LinearGradient>
   );
 };
 

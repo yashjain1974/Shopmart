@@ -17,40 +17,36 @@ const videos = [
   {
     id: "1",
     uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723139085/lk9tfab7ogctesq7kdhq.mp4",
-    title: "Sample Video 1",
-    description: "A short sample video.",
+    title: "Addids X Germany",
+    description: "A short sample video with #nature and #peace. Enjoy the beauty of the world in a peaceful environment, where you can relax and feel rejuvenated. This video captures the essence of tranquility and harmony with nature. #calm #serenity",
   },
   {
     id: "2",
     uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723140997/Find_the_beauty_in_everything_cinematography_filmmakers_filmmakersworld_cinematicreels_sonyalpha_cpmawh.mp4",
     title: "Sample Video 2",
-    description: "Another short sample video.",
+    description: "Another short sample video with #cinematography and #art. Discover the art of cinematography and how it can transform the ordinary into the extraordinary. #film #creativity",
   },
+
+  
   {
     id: "3",
     uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723142877/We_re_here_to_remind_you_neco2u.mp4",
     title: "Big Buck Bunny",
-    description: "A fun animated video.",
+    description: "A fun animated video #animation #bunny.",
   },
   {
     id: "4",
     uri: "https://www.w3schools.com/html/movie.mp4",
     title: "Bear and Hare",
-    description: "Another fun animated video.",
+    description: "Another fun animated video #animals #cute.",
   },
   {
     id: "5",
     uri: "https://samplelib.com/lib/preview/mp4/sample-1mb.mp4",
     title: "Sample Video 3",
-    description: "A short sample video.",
+    description: "A short sample video with #samples #fun.",
   },
-  {
-    id: "6",
-    uri: "https://samplelib.com/lib/preview/mp4/sample-3mb.mp4",
-    title: "Sample Video 4",
-    description: "Another short sample video.",
-  },
-  // Add more engaging video URIs here
+  // Add more video data here...
 ];
 
 const RenderItem = React.memo(
@@ -63,6 +59,13 @@ const RenderItem = React.memo(
     onMutePress,
     onShowProducts,
   }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const maxDescriptionLength = 100;
+
+    const toggleDescription = () => {
+      setIsExpanded(!isExpanded);
+    };
+
     return (
       <View style={styles.videoContainer}>
         <Video
@@ -120,7 +123,16 @@ const RenderItem = React.memo(
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.description}>{item.description}</Text>
+            <Text style={styles.description}>
+              {isExpanded
+                ? item.description
+                : `${item.description.slice(0, maxDescriptionLength)}... `}
+              {item.description.length > maxDescriptionLength && (
+                <Text style={styles.seeMoreText} onPress={toggleDescription}>
+                  {isExpanded ? "See less" : "See more"}
+                </Text>
+              )}
+            </Text>
           </View>
         </View>
       </View>
@@ -221,33 +233,39 @@ const styles = StyleSheet.create({
   },
   overlay: {
     position: "absolute",
-    bottom: 70,
+    bottom: 20,
     left: 20,
     right: 20,
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: "column",
+    alignItems: "flex-start",
   },
   iconsContainer: {
+    flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginLeft: 20,
+    marginBottom: 20,
   },
   icon: {
-    marginVertical: 10,
+    marginHorizontal: 10,
   },
   textContainer: {
+    
     flex: 1,
-    marginLeft: 20,
+    marginBottom:10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 5,
   },
   description: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#fff",
+  },
+  seeMoreText: {
+    color: "#FFD700",
+    fontWeight: "bold",
   },
 });
 
