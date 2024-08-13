@@ -4,9 +4,9 @@ import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
 const products = [
-  { id: '1', name: 'Casual Shirt', image: 'https://getketchadmin.getketch.com/product/8905745177197/660/HLSH013833_1.jpg' },
-  { id: '2', name: 'Summer Dress', image: 'https://images-cdn.ubuy.co.in/6360014d9a4c66031277d697-summer-dresses-for-women-2022-womens.jpg' },
-  { id: '3', name: 'Chino Pants', image: 'https://www.uniqlo.com/jp/ja/contents/feature/masterpiece/common/img/product/item_22_kv.jpg?240711' },
+  { id: '1', name: 'Casual Jacket', image: 'https://img.tatacliq.com/images/i7/1348Wx2000H/MP000000008944470_1348Wx2000H_202102281843001.jpeg' },
+  { id: '2', name: 'Track pants', image: 'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/af65bd9597514db3acd21db8ace43880_9366/adidas_Rekive_Woven_Track_Pants_Multicolor_HZ0730_21_model.jpg' },
+  { id: '3', name: 'Bracelet', image: 'https://m.media-amazon.com/images/I/51b0BV5jwzL._AC_UY1100_.jpg' },
   // Add more products as needed
 ];
 

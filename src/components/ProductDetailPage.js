@@ -7,7 +7,7 @@ import HeaderPage from './Header';
 const { width } = Dimensions.get('window');
 
 const productImages = [
-  { id: '1', image: 'https://getketchadmin.getketch.com/product/8905745177197/660/HLSH013833_1.jpg' },
+  { id: '1', image: 'https://img.tatacliq.com/images/i7/1348Wx2000H/MP000000008944470_1348Wx2000H_202102281843001.jpeg' },
   { id: '2', image: 'https://media.istockphoto.com/id/1271796113/photo/women-is-holding-handbag-near-luxury-car.jpg?s=612x612&w=0&k=20&c=-jtXLmexNgRa-eKqA1X8UJ8QYWhW7XgDiWNmzuuCHmM=' },
   { id: '3', image: 'https://i.imgur.com/3VB1bRk.jpg' },
   { id: '4', image: 'https://i.imgur.com/QD1WEz2.jpg' },
@@ -63,9 +63,9 @@ const ProductDetailPage = ({ route }) => {
           <Text style={styles.productColor}>Color: {product.color}</Text>
 
           <View style={styles.colorOptions}>
-            <View style={[styles.colorCircle, { backgroundColor: 'blue' }]} />
-            <View style={[styles.colorCircle, { backgroundColor: 'yellow' }]} />
-            <View style={[styles.colorCircle, { backgroundColor: 'red' }]} />
+            <View style={[styles.colorCircle, { backgroundColor: '#90adc6' }]} />
+            <View style={[styles.colorCircle, { backgroundColor: '#e9eaec' }]} />
+            <View style={[styles.colorCircle, { backgroundColor: '#333652' }]} />
           </View>
           <TouchableOpacity
         style={styles.contentCreatorButton}
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   productPrice: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#8A2BE2',
+    color: '#9c6da6',
     marginBottom: 10,
   },
   productColor: {
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   },
   recommendedPrice: {
     fontSize: 14,
-    color: '#8A2BE2',
+    color: '#9c6da6',
     fontWeight: 'bold',
   },
   contentCreatorButton: {
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   contentCreatorText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#8A2BE2',
+    color: '#9c6da6',
   },
   contentCreatorSubText: {
     fontSize: 14,
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   addToCartFooterButton: {
-    backgroundColor: '#8A2BE2',
+    backgroundColor: '#9c6da6',
     borderRadius: 25,
     paddingVertical: 12,
   },

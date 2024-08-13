@@ -26,7 +26,7 @@ const HomePage = ({ navigation }) => {
       <HeaderPage />
       <View style={styles.container}>
       <LinearGradient
-      colors={['#3498db', '#2980b9']}
+      colors={['#e9eaec', '#e9eaec']}
       style={styles.header}
     >
         
@@ -126,14 +126,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 5,
     paddingHorizontal: 15,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#e9eaec',
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#9c6da6',
   },
   tabText: {
-    fontSize: 16,
-    color: '#0066cc',
+    fontSize: 17,
+    color: '#010802'
   },
   scrollContainer: {
     padding: 15,
@@ -143,9 +143,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   carouselItem: {
-    width: 390,
+    width: 351,
     height: 200,
-    marginRight: 10,
+    marginRight: 9,
     borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: '#ffffff',
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   },
   productPrice: {
     fontSize: 16,
-    color: '#e74c3c',
+    color: '#9c6da6',
     fontWeight: 'bold',
   },
   bannerGrid: {
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     left: 15,
   },
   bannerTitle: {
-    fontSize: 18,
+    fontSize: 20,
     color: '#fff',
     fontWeight: 'bold',
   },

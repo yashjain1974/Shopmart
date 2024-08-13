@@ -6,6 +6,7 @@ import {
   FlatList,
   Text,
   TouchableOpacity,
+  Animated
 } from "react-native";
 import { Video } from "expo-av";
 import { Icon } from "react-native-elements";
@@ -17,13 +18,13 @@ const videos = [
   {
     id: "1",
     uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723139085/lk9tfab7ogctesq7kdhq.mp4",
-    title: "Addids X Germany",
-    description: "A short sample video with #nature and #peace. Enjoy the beauty of the world in a peaceful environment, where you can relax and feel rejuvenated. This video captures the essence of tranquility and harmony with nature. #calm #serenity",
+    title: "Adidas X Germany",
+    description: "Mission: sneaking a muffin out of olympics village. Enjoy the beauty of the world in a peaceful environment, where you can relax and feel rejuvenated. This video captures the essence of tranquility and harmony with nature. #calm #serenity",
   },
   {
     id: "2",
     uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723140997/Find_the_beauty_in_everything_cinematography_filmmakers_filmmakersworld_cinematicreels_sonyalpha_cpmawh.mp4",
-    title: "Sample Video 2",
+    title: "Find the beauty in everything",
     description: "Another short sample video with #cinematography and #art. Discover the art of cinematography and how it can transform the ordinary into the extraordinary. #film #creativity",
   },
 
@@ -84,21 +85,21 @@ const RenderItem = React.memo(
             <Icon
               name="heart"
               type="feather"
-              color="#fff"
+              color="#e04353"
               size={30}
               containerStyle={styles.icon}
             />
             <Icon
               name="message-circle"
               type="feather"
-              color="#fff"
+              color="#6aad36"
               size={30}
               containerStyle={styles.icon}
             />
             <Icon
               name="share-2"
               type="feather"
-              color="#fff"
+              color="#669be8"
               size={30}
               containerStyle={styles.icon}
             />
@@ -115,7 +116,7 @@ const RenderItem = React.memo(
               <Icon
                 name="shopping-bag"
                 type="feather"
-                color="#fff"
+                color="#dbbb3b"
                 size={30}
                 containerStyle={styles.icon}
               />
@@ -264,7 +265,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   seeMoreText: {
-    color: "#FFD700",
+    color: "#c5a1d4",
     fontWeight: "bold",
   },
 });

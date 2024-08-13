@@ -34,7 +34,7 @@ const ProfilePage = () => {
             size={130}
             width={18}
             fill={85}
-            tintColor="#8A2BE2"
+            tintColor="#90adc6"
             backgroundColor="#E0E0E0"
             rotation={0}
             duration={800}
@@ -59,9 +59,9 @@ const ProfilePage = () => {
                 <Image source={{ uri: item.image }} style={styles.contentImage} />
                 <Text style={styles.contentTitle}>{item.title}</Text>
                 <View style={styles.contentMetrics}>
-                  <Icon name="visibility" type="material" color="#8A2BE2" size={18} />
+                  <Icon name="visibility" type="material" color="#ba1a6f" style={styles.icon} size={15} />
                   <Text style={styles.metricText}>{item.views}</Text>
-                  <Icon name="thumb-up" type="material" color="#8A2BE2" size={18} />
+                  <Icon name="thumb-up" type="material" color="#1d2024" style={styles.icon} size={15} />
                   <Text style={styles.metricText}>{item.likes}</Text>
                 </View>
               </View>
@@ -79,7 +79,7 @@ const ProfilePage = () => {
             size={130}
             width={18}
             fill={50}
-            tintColor="#FF6347"
+            tintColor="#9c6da6"
             backgroundColor="#E0E0E0"
             rotation={0}
             duration={800}
@@ -100,7 +100,7 @@ const ProfilePage = () => {
             size={130}
             width={18}
             fill={80}
-            tintColor="#4682B4"
+            tintColor="#9c6da6"
             backgroundColor="#E0E0E0"
             rotation={0}
             duration={800}
@@ -122,7 +122,7 @@ const ProfilePage = () => {
             <Text style={styles.promotionText}>Top Creator of the Week</Text>
           </View>
           <View style={styles.promotionItem}>
-            <Icon name="thumb-up" type="material" color="#8A2BE2" />
+            <Icon name="thumb-up" type="material" color="#9c6da6" />
             <Text style={styles.promotionText}>Best Content Engagement</Text>
           </View>
         </View>
@@ -137,14 +137,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   profileHeader: {
-    backgroundColor: '#8A2BE2',
+    backgroundColor: '#9c6da6',
     alignItems: 'center',
     paddingVertical: 30,
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
   },
   avatar: {
     marginBottom: 10,
+  },
+  icon: {
+    marginLeft: 10, // Define margin left here
   },
   userName: {
     fontSize: 24,
@@ -173,7 +176,7 @@ const styles = StyleSheet.create({
   pointsText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#8A2BE2',
+    color: '#333652',
   },
   contentItem: {
     backgroundColor: '#FFF',
@@ -201,13 +204,12 @@ const styles = StyleSheet.create({
   },
   contentMetrics: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   metricText: {
     fontSize: 14,
     color: '#666',
-    marginLeft: 5,
+    marginLeft: 6,
   },
   contentList: {
     paddingLeft: 10,
@@ -215,7 +217,7 @@ const styles = StyleSheet.create({
   earningsText: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#FF6347',
+    color: '#90adc6',
     marginVertical: 10,
   },
   earningsSubtitle: {

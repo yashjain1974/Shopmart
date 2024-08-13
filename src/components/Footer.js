@@ -8,20 +8,20 @@ const Footer = () => {
 
   return (
     <LinearGradient
-    colors={['#3498db', '#2980b9']}
+    colors={['#e9eaec', '#e9eaec']}
     style={styles.footer}
   >
     
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Home')}>
-        <Icon name="home" type="feather" color="#fff" />
+        <Icon name="home" type="feather" color="#010802" />
         
       </TouchableOpacity>
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Reel')}>
-        <Icon name="film" type="feather" color="#fff" />
+        <Icon name="film" type="feather" color="#010802" />
         {/* <Text style={styles.footerButtonText}>Reels</Text> */}
       </TouchableOpacity>
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('ProfilePage')}>
-        <Icon name="user" type="feather" color="#fff" />
+        <Icon name="user" type="feather" color="#010802" />
         {/* <Text style={styles.footerButtonText}>Profile</Text> */}
       </TouchableOpacity>
       
@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#000',
-    paddingVertical: 18,
-    borderRadius:5,
+    paddingVertical: 13,
   },
   footerButton: {
     justifyContent: 'center',

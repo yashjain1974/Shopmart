@@ -9,7 +9,7 @@ const { width } = Dimensions.get('window');
 
 const products = {
   Fashion: [
-    { id: '1', name: 'Casual Shirt', price: 'Rs 2,999', image: 'https://getketchadmin.getketch.com/product/8905745177197/660/HLSH013833_1.jpg', isNew: true },
+    { id: '1', name: 'Casual Jacket', price: 'Rs 2,999', image: 'https://img.tatacliq.com/images/i7/1348Wx2000H/MP000000008944470_1348Wx2000H_202102281843001.jpeg', isNew: true },
     { id: '2', name: 'Leather Bag', price: 'Rs 4,999', image: 'https://media.istockphoto.com/id/1271796113/photo/women-is-holding-handbag-near-luxury-car.jpg?s=612x612&w=0&k=20&c=-jtXLmexNgRa-eKqA1X8UJ8QYWhW7XgDiWNmzuuCHmM=', isNew: false },
     { id: '3', name: 'Summer Dress', price: 'Rs 799', image: 'https://images-cdn.ubuy.co.in/6360014d9a4c66031277d697-summer-dresses-for-women-2022-womens.jpg', isNew: false },
     { id: '4', name: 'Chino Pants', price: 'Rs 1,029', image: 'https://www.uniqlo.com/jp/ja/contents/feature/masterpiece/common/img/product/item_22_kv.jpg?240711', isNew: true },
@@ -86,7 +86,9 @@ const CategoryPage = ({ route }) => {
               <Text style={styles.productName}>{item.name}</Text>
               <Text style={styles.productPrice}>{item.price}</Text>
               <TouchableOpacity style={styles.addToBagButton}>
-                <Text style={styles.addToBagButtonText}>ADD TO BAG</Text>
+              <Icon name="add-shopping-cart" type="material" color="#FFD700" size={14} />
+                  
+                <Text style={styles.addToBagButtonText}>Buy</Text>
               </TouchableOpacity>
             </TouchableOpacity>
           )}
@@ -188,8 +190,8 @@ const styles = StyleSheet.create({
   addToBagButton: {
     marginTop: 10,
     paddingVertical: 8,
-    paddingHorizontal: 25,
-    backgroundColor: '#0071ce',
+    paddingHorizontal: 20,
+    backgroundColor: '#9c6da6',
     borderRadius: 25,
   },
   addToBagButtonText: {
