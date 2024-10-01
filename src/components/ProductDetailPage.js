@@ -1,9 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import HeaderPage from './Header';
-
+import { useCart } from '../store/CartContext';
+import ConfirmationModal from './Cart/ConfirmationModal';
 const { width } = Dimensions.get('window');
 
 const productImages = [
@@ -22,7 +24,8 @@ const recommendedItems = [
 const ProductDetailPage = ({ route }) => {
   const navigation = useNavigation();
   const { product } = route.params;
-
+  const { addToCart } = useCart();
+  const [modalVisible, setModalVisible] = useState(false);
   const renderProductImage = ({ item }) => (
     <Image source={{ uri: item.image }} style={styles.carouselImage} />
   );
@@ -34,7 +37,18 @@ const ProductDetailPage = ({ route }) => {
       <Text style={styles.recommendedPrice}>{item.price}</Text>
     </TouchableOpacity>
   );
+  const handleAddToCart = () => {
+    addToCart(product);
+    setModalVisible(true);
+  };
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
 
+  const handleCheckout = () => {
+    setModalVisible(false);
+    navigation.navigate('ShoppingCart');
+  };
   return (
     <>
       
@@ -59,7 +73,7 @@ const ProductDetailPage = ({ route }) => {
  
         <View style={styles.productInfoContainer}>
           <Text style={styles.productTitle}>{product.name}</Text>
-          <Text style={styles.productPrice}>{product.price}</Text>
+          <Text style={styles.productPrice}>$ {product.price}</Text>
           <Text style={styles.productColor}>Color: {product.color}</Text>
 
           <View style={styles.colorOptions}>
@@ -127,11 +141,14 @@ const ProductDetailPage = ({ route }) => {
         </View>
       </ScrollView>
       <View style={styles.footer}>
-        <Button
-          title="Add to Cart"
-          buttonStyle={styles.addToCartFooterButton}
-          containerStyle={styles.addToCartFooterContainer}
-        />
+      <Button title="Add to Cart" onPress={handleAddToCart} buttonStyle={styles.addToCartFooterButton}
+          containerStyle={styles.addToCartFooterContainer}/>
+      
+      <ConfirmationModal
+  visible={modalVisible}
+  onClose={() => setModalVisible(false)}
+  onCheckout={handleCheckout}
+/>
       </View>
     </>
   );

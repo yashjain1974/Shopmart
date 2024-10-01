@@ -10,6 +10,7 @@ import CategoryPage from './CategoryPage';
 import ProductDetailPage from './ProductDetailPage';
 import ProfilePage from './ProfilePage';
 import ContentUploadPage from './ContentUploadPage';
+import ShoppingCartScreen from './Cart/ShoppingCartScreen';
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
@@ -24,6 +25,7 @@ const MainNavigator = () => {
             <Stack.Screen name="ProductDetail" component={ProductDetailPage} />
             <Stack.Screen name="ProfilePage" component={ProfilePage} />
             <Stack.Screen name="ContentUpload" component={ContentUploadPage} />
+            <Stack.Screen name="ShoppingCart" component={ShoppingCartScreen} />
         
             
           </Stack.Navigator>
