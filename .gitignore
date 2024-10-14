@@ -7,6 +7,9 @@ node_modules/
 .expo/
 dist/
 web-build/
+fastapi/venv
+fastapi/shopreel-4b398-firebase-adminsdk-20lns-5e2c723abf.json
+
 
 # Native
 *.orig.*

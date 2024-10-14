@@ -3,29 +3,34 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAuth } from '../store/AuthContext'; // Adjust the import path as needed
+
 const Footer = () => {
   const navigation = useNavigation();
+  const { user } = useAuth();
+
+  const handleProfilePress = () => {
+    if (user) {
+      navigation.navigate('ProfilePage');
+    } else {
+      navigation.navigate('Login');
+    }
+  };
 
   return (
     <LinearGradient
-    colors={['#e9eaec', '#e9eaec']}
-    style={styles.footer}
-  >
-    
+      colors={['#e9eaec', '#e9eaec']}
+      style={styles.footer}
+    >
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Home')}>
         <Icon name="home" type="feather" color="#010802" />
-        
       </TouchableOpacity>
       <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('Reel')}>
         <Icon name="film" type="feather" color="#010802" />
-        {/* <Text style={styles.footerButtonText}>Reels</Text> */}
       </TouchableOpacity>
-      <TouchableOpacity style={styles.footerButton} onPress={() => navigation.navigate('ProfilePage')}>
-        <Icon name="user" type="feather" color="#010802" />
-        {/* <Text style={styles.footerButtonText}>Profile</Text> */}
+      <TouchableOpacity style={styles.footerButton} onPress={handleProfilePress}>
+        <Icon name={user ? "user" : "log-in"} type="feather" color="#010802" />
       </TouchableOpacity>
-      
-    
     </LinearGradient>
   );
 };

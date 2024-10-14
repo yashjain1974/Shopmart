@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -6,49 +6,17 @@ import {
   FlatList,
   Text,
   TouchableOpacity,
-  Animated
+  ActivityIndicator,
 } from "react-native";
 import { Video } from "expo-av";
 import { Icon } from "react-native-elements";
 import ProductListModal from "./ProductListModal";
+import axios from 'axios';
 
 const { width, height } = Dimensions.get("window");
 
-const videos = [
-  {
-    id: "1",
-    uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723139085/lk9tfab7ogctesq7kdhq.mp4",
-    title: "Adidas X Germany",
-    description: "Mission: sneaking a muffin out of olympics village. Enjoy the beauty of the world in a peaceful environment, where you can relax and feel rejuvenated. This video captures the essence of tranquility and harmony with nature. #calm #serenity",
-  },
-  {
-    id: "2",
-    uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723140997/Find_the_beauty_in_everything_cinematography_filmmakers_filmmakersworld_cinematicreels_sonyalpha_cpmawh.mp4",
-    title: "Find the beauty in everything",
-    description: "Another short sample video with #cinematography and #art. Discover the art of cinematography and how it can transform the ordinary into the extraordinary. #film #creativity",
-  },
-
-  
-  {
-    id: "3",
-    uri: "https://res.cloudinary.com/dr1jpom0y/video/upload/v1723142877/We_re_here_to_remind_you_neco2u.mp4",
-    title: "Big Buck Bunny",
-    description: "A fun animated video #animation #bunny.",
-  },
-  {
-    id: "4",
-    uri: "https://www.w3schools.com/html/movie.mp4",
-    title: "Bear and Hare",
-    description: "Another fun animated video #animals #cute.",
-  },
-  {
-    id: "5",
-    uri: "https://samplelib.com/lib/preview/mp4/sample-1mb.mp4",
-    title: "Sample Video 3",
-    description: "A short sample video with #samples #fun.",
-  },
-  // Add more video data here...
-];
+// Replace with your actual backend URL
+const API_URL = 'http://192.168.242.166:8000';
 
 const RenderItem = React.memo(
   ({
@@ -73,7 +41,7 @@ const RenderItem = React.memo(
           ref={(ref) => {
             videoRefs.current[index] = ref;
           }}
-          source={{ uri: item.uri }}
+          source={{ uri: item.url }}
           style={styles.video}
           resizeMode="cover"
           shouldPlay={index === currentVideoIndex}
@@ -142,10 +110,32 @@ const RenderItem = React.memo(
 );
 
 const ReelList = () => {
+  const [reels, setReels] = useState([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const videoRefs = useRef([]);
+
+  useEffect(() => {
+    fetchReels();
+  }, []);
+
+  const fetchReels = async () => {
+    try {
+      console.log('Fetching reels from:', `${API_URL}/reels/`);
+      const response = await axios.get(`${API_URL}/reels/`, { timeout: 10000 });
+      console.log('Reels fetched successfully:', response.data);
+      setReels(response.data.reels);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching reels:', error);
+      console.error('Error details:', error.response?.data);
+      setError('Failed to fetch reels. Please check your connection and try again.');
+      setIsLoading(false);
+      Alert.alert('Error', 'Failed to fetch reels. Please check your connection and try again.');
+    }
+  };
 
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length > 0) {
@@ -195,10 +185,18 @@ const ReelList = () => {
     [currentVideoIndex, isMuted]
   );
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={videos}
+        data={reels}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         pagingEnabled
@@ -216,7 +214,6 @@ const ReelList = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

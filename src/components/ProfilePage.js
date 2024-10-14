@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, FlatList, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { Icon, Avatar } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import HeaderPage from './Header';
-
+import { useAuth } from '../store/AuthContext';
+import { Button } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 const { width } = Dimensions.get('window');
 
 const contentItems = [
@@ -13,6 +15,22 @@ const contentItems = [
 ];
 
 const ProfilePage = () => {
+  const { user, logout } = useAuth();
+  const navigation = useNavigation();
+  const handleLogout = async () => {
+    await logout();
+    navigation.navigate('Home'); // Or wherever you want to redirect after logout
+  };
+  console.log(user);
+  if (!user) {
+    return (
+      <View style={styles.container}>
+        <Text>Please log in to view your profile</Text>
+        <Button title="Log In" onPress={() => navigation.navigate('Login')} />
+        <Button title="Sign Up" onPress={() => navigation.navigate('Signup')} />
+      </View>
+    );
+  }
   return (
     <>
       <HeaderPage />
@@ -24,10 +42,14 @@ const ProfilePage = () => {
             source={{ uri: 'https://cdn2.vectorstock.com/i/1000x1000/18/11/man-profile-cartoon-vector-19491811.jpg' }}
             containerStyle={styles.avatar}
           />
-          <Text style={styles.userName}>Yash Jain</Text>
-          <Text style={styles.userBio}>Fashion Content Creator</Text>
+         <Text style={styles.userName}>{user.name || 'User Name'}</Text>
+          <Text style={styles.userBio}>{user.bio || 'Fashion Content Creator'}</Text>
+          <Text style={styles.userEmail}>{user.email}</Text>
         </View>
-
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Icon name="logout" type="material" color="#FFF" />
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Your Points</Text>
           <AnimatedCircularProgress
@@ -246,6 +268,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     marginLeft: 10,
+  },
+  userEmail: {
+    fontSize: 14,
+    color: '#EEE',
+    marginTop: 5,
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ba1a6f',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    alignSelf: 'center',
+  },
+  logoutText: {
+    color: '#FFF',
+    marginLeft: 10,
+    fontSize: 16,
   },
 });
 

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Switch, ScrollView } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
-
+import { useAuth } from '../store/AuthContext';
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 
 const ContentUploadPage = () => {
+  const { user, loading } = useAuth();
   const [videoUploaded, setVideoUploaded] = useState(false);
   const [thumbnailUploaded, setThumbnailUploaded] = useState(false);
   const [invoiceUploaded, setInvoiceUploaded] = useState(false);
@@ -34,8 +36,19 @@ const ContentUploadPage = () => {
       // Handle the file
     }
   };
-
+  if(!user){
+    return (
+      <View style={styles.container1}>
+        <Text>Please log in to view your profile</Text>
+        <Button title="Log In" onPress={() => navigation.navigate('Login')} />
+        <Button title="Sign Up" onPress={() => navigation.navigate('Signup')} />
+      </View>
+    )
+      
+  }
   return (
+   
+
     <ScrollView style={styles.container}>
       <View style={styles.headerIcons}></View>
       <View style={styles.header}>
@@ -163,6 +176,13 @@ const ContentUploadPage = () => {
 };
 
 const styles = StyleSheet.create({
+  container1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding:20,
+    margin:20,
+  },
   container: {
     flex: 1,
     padding: 20,
