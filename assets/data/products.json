@@ -1,0 +1,418 @@
+{
+    "products": [
+      {
+        "id": "1",
+        "category": "Fashion",
+        "name": "Gucci Horsebit Track Jacket",
+        "price": 2450,
+        "color": "Navy Blue",
+        "availableColors": ["Navy Blue", "Light Grey", "Black"],
+        "images": [
+          "https://example.com/gucci-jacket-1.jpg",
+          "https://example.com/gucci-jacket-2.jpg",
+          "https://example.com/gucci-jacket-3.jpg"
+        ],
+        "details": [
+          "Horsebit zipped track jacket",
+          "Classic collar",
+          "Chest patch pocket",
+          "Long sleeves",
+          "Front zip closure",
+          "Two welt pockets on the sides"
+        ],
+        "composition": {
+          "outer": {
+            "cotton": "100%",
+            "calfLeather": "100%"
+          },
+          "lining": {
+            "polyester": "100%"
+          }
+        },
+        "sizeAndFit": [
+          "Fits true to size. Take your normal size",
+          "Mid-weight, slightly stretchy fabric",
+          "The model is wearing a size larger"
+        ],
+        "recommendedWith": [
+          {
+            "id": "2",
+            "name": "Gucci White Pants",
+            "price": 1250,
+            "image": "https://example.com/gucci-pants.jpg"
+          },
+          {
+            "id": "3",
+            "name": "Gucci Leather Belt",
+            "price": 550,
+            "image": "https://example.com/gucci-belt.jpg"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "category": "Fashion",
+        "name": "Louis Vuitton Shoulder Bag",
+        "price": 3200,
+        "color": "Brown",
+        "availableColors": ["Brown", "Black", "Cream"],
+        "images": [
+          "https://example.com/lv-bag-1.jpg",
+          "https://example.com/lv-bag-2.jpg",
+          "https://example.com/lv-bag-3.jpg"
+        ],
+        "details": [
+          "Monogram canvas",
+          "Leather trim",
+          "Golden hardware",
+          "Adjustable strap",
+          "Interior zip pocket",
+          "Magnetic closure"
+        ],
+        "composition": {
+          "outer": {
+            "canvas": "100%",
+            "leather": "100%"
+          },
+          "lining": {
+            "microfiber": "100%"
+          }
+        },
+        "sizeAndFit": [
+          "Dimensions: 25 x 18 x 9 cm",
+          "Strap drop: 55 cm",
+          "Perfect for everyday use"
+        ],
+        "recommendedWith": [
+          {
+            "id": "4",
+            "name": "LV Wallet",
+            "price": 850,
+            "image": "https://example.com/lv-wallet.jpg"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "category": "Technology",
+        "name": "MacBook Pro M2",
+        "price": 1999,
+        "color": "Space Gray",
+        "availableColors": ["Space Gray", "Silver"],
+        "images": [
+          "https://example.com/macbook-1.jpg",
+          "https://example.com/macbook-2.jpg",
+          "https://example.com/macbook-3.jpg"
+        ],
+        "details": [
+          "14-inch Liquid Retina XDR display",
+          "Apple M2 Pro chip",
+          "16GB unified memory",
+          "512GB SSD storage",
+          "Three Thunderbolt 4 ports",
+          "Magic Keyboard with Touch ID"
+        ],
+        "composition": {
+          "body": {
+            "aluminum": "100%"
+          },
+          "screen": {
+            "glass": "100%"
+          }
+        },
+        "sizeAndFit": [
+          "Height: 1.55 cm",
+          "Width: 31.26 cm",
+          "Depth: 22.12 cm",
+          "Weight: 1.6 kg"
+        ],
+        "recommendedWith": [
+          {
+            "id": "5",
+            "name": "Magic Mouse",
+            "price": 99,
+            "image": "https://example.com/magic-mouse.jpg"
+          }
+        ]
+      },
+      {
+        "id": "4",
+        "category": "Electronics",
+        "name": "Sony WH-1000XM4",
+        "price": 349,
+        "color": "Black",
+        "availableColors": ["Black", "Silver", "Midnight Blue"],
+        "images": [
+          "https://example.com/sony-headphones-1.jpg",
+          "https://example.com/sony-headphones-2.jpg"
+        ],
+        "details": [
+          "Industry-leading noise canceling",
+          "30-hour battery life",
+          "Touch sensor controls",
+          "Speak-to-chat technology",
+          "Multipoint pairing",
+          "Adaptive sound control"
+        ],
+        "composition": {
+          "headband": {
+            "plastic": "80%",
+            "metal": "20%"
+          },
+          "cushions": {
+            "protein leather": "100%"
+          }
+        },
+        "sizeAndFit": [
+          "Adjustable headband",
+          "Foldable design",
+          "Weight: 254g"
+        ],
+        "recommendedWith": [
+          {
+            "id": "6",
+            "name": "Headphone Stand",
+            "price": 49,
+            "image": "https://example.com/headphone-stand.jpg"
+          }
+        ]
+      },
+      {
+        "id": "5",
+        "category": "Health & Beauty",
+        "name": "La Mer Moisturizing Cream",
+        "price": 350,
+        "color": "N/A",
+        "images": [
+          "https://example.com/lamer-1.jpg",
+          "https://example.com/lamer-2.jpg"
+        ],
+        "details": [
+          "Ultra-rich moisturizing cream",
+          "Contains Miracle Broth™",
+          "Helps heal dryness",
+          "Reduces fine lines",
+          "Strengthens skin barrier",
+          "Suitable for all skin types"
+        ],
+        "composition": {
+          "key_ingredients": [
+            "Miracle Broth™",
+            "Lime Tea Concentrate",
+            "Marine ingredients"
+          ]
+        },
+        "sizeAndFit": [
+          "Available in 30ml, 60ml, and 100ml",
+          "Recommended use: twice daily"
+        ],
+        "recommendedWith": [
+          {
+            "id": "7",
+            "name": "La Mer Toner",
+            "price": 150,
+            "image": "https://example.com/lamer-toner.jpg"
+          }
+        ]
+      },
+      {
+        "id": "6",
+        "category": "Toys",
+        "name": "LEGO Star Wars Millennium Falcon",
+        "price": 159.99,
+        "color": "Multi",
+        "images": [
+          "https://example.com/lego-falcon-1.jpg",
+          "https://example.com/lego-falcon-2.jpg"
+        ],
+        "details": [
+          "1,351 pieces",
+          "7 minifigures included",
+          "Rotating gun turrets",
+          "Lowering ramp",
+          "Detailed interior",
+          "Opening cockpit"
+        ],
+        "composition": {
+          "material": {
+            "abs plastic": "100%"
+          }
+        },
+        "sizeAndFit": [
+          "Ages: 9+",
+          "Model dimensions: 14cm x 44cm x 32cm"
+        ],
+        "recommendedWith": [
+          {
+            "id": "8",
+            "name": "LEGO Display Stand",
+            "price": 29.99,
+            "image": "https://example.com/lego-stand.jpg"
+          }
+        ]
+      },
+      {
+        "id": "7",
+        "category": "Technology",
+        "name": "iPad Pro 12.9",
+        "price": 1099,
+        "color": "Silver",
+        "availableColors": ["Silver", "Space Gray"],
+        "images": [
+          "https://example.com/ipad-pro-1.jpg",
+          "https://example.com/ipad-pro-2.jpg"
+        ],
+        "details": [
+          "12.9-inch Liquid Retina XDR display",
+          "M2 chip",
+          "12MP Ultra Wide front camera",
+          "Face ID",
+          "All-day battery life",
+          "5G capability"
+        ],
+        "composition": {
+          "body": {
+            "aluminum": "100%"
+          },
+          "display": {
+            "glass": "100%"
+          }
+        },
+        "sizeAndFit": [
+          "Height: 28.06 cm",
+          "Width: 21.49 cm",
+          "Depth: 0.64 cm",
+          "Weight: 682g"
+        ],
+        "recommendedWith": [
+          {
+            "id": "9",
+            "name": "Apple Pencil",
+            "price": 129,
+            "image": "https://example.com/apple-pencil.jpg"
+          }
+        ]
+      },
+      {
+        "id": "8",
+        "category": "Electronics",
+        "name": "Samsung 65\" QLED 4K TV",
+        "price": 1799,
+        "color": "Black",
+        "availableColors": ["Nickel/Copper", "Prussian Blue/Rich Copper"],
+        "images": [
+          "https://example.com/samsung-tv-1.jpg",
+          "https://example.com/samsung-tv-2.jpg"
+        ],
+        "details": [
+          "Quantum HDR",
+          "Motion Xcelerator Turbo+",
+          "Object Tracking Sound",
+          "Q-Symphony",
+          "Gaming Hub",
+          "Smart TV features"
+        ],
+        "composition": {
+          "screen": {
+            "quantum dot": "100%"
+          },
+          "frame": {
+            "aluminum": "100%"
+          }
+        },
+        "sizeAndFit": [
+          "Screen size: 65 inches",
+          "Weight: 24.7kg with stand",
+          "VESA mount compatible"
+        ],
+        "recommendedWith": [
+          {
+            "id": "10",
+            "name": "Samsung Soundbar",
+            "price": 399,
+            "image": "https://example.com/soundbar.jpg"
+          }
+        ]
+      },
+      {
+        "id": "9",
+        "category": "Health & Beauty",
+        "name": "Dyson Airwrap Complete",
+        "price": 599,
+        "color": "Nickel/Copper",
+        "availableColors": ["Nickel/Copper", "Prussian Blue/Rich Copper"],
+        "images": [
+          "https://example.com/airwrap-1.jpg",
+          "https://example.com/airwrap-2.jpg"
+        ],
+        "details": [
+          "Multiple styling attachments",
+          "Intelligent heat control",
+          "Coanda effect",
+          "Digital motor V9",
+          "No extreme heat",
+          "Negative ions"
+        ],
+        "composition": {
+          "body": {
+            "plastic": "70%",
+            "metal": "30%"
+          }
+        },
+        "sizeAndFit": [
+          "Length: 27cm",
+          "Weight: 560g",
+          "Cord length: 2.62m"
+        ],
+        "recommendedWith": [
+          {
+            "id": "11",
+            "name": "Dyson Travel Case",
+            "price": 49,
+            "image": "https://example.com/dyson-case.jpg"
+          }
+        ]
+      },
+      {
+        "id": "10",
+        "category": "Toys",
+        "name": "Nintendo Switch OLED",
+        "price": 349,
+        "color": "White",
+        "availableColors": ["White", "Neon Red/Blue"],
+        "images": [
+          "https://example.com/switch-1.jpg",
+          "https://example.com/switch-2.jpg"
+        ],
+        "details": [
+          "7-inch OLED screen",
+          "64 GB internal storage",
+          "Enhanced audio",
+          "Wide adjustable stand",
+          "Wired LAN port",
+          "TV mode, Tabletop mode, Handheld mode"
+        ],
+        "composition": {
+          "screen": {
+            "oled": "100%"
+          },
+          "body": {
+            "plastic": "100%"
+          }
+        },
+        "sizeAndFit": [
+          "4.5-9 hours battery life",
+          "Weight: 420g with Joy-Con controllers",
+          "Screen size: 7 inches"
+        ],
+        "recommendedWith": [
+          {
+            "id": "12",
+            "name": "Pro Controller",
+            "price": 69.99,
+            "image": "https://example.com/pro-controller.jpg"
+          }
+        ]
+      }
+    ]
+  }

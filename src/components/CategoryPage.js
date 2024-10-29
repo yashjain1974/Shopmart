@@ -1,24 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, Icon } from 'react-native-elements';
 import HeaderPage from './Header';
 import { useNavigation } from '@react-navigation/native';
-import { Icon,Button } from 'react-native-elements';
-
+import productData from '../../assets/data/products.json';
+import { useCart } from '../store/CartContext';
 const { width } = Dimensions.get('window');
 
-const products = {
-  Fashion: [
-    { id: '1', name: 'Casual Jacket', price: 2999, image: 'https://img.tatacliq.com/images/i7/1348Wx2000H/MP000000008944470_1348Wx2000H_202102281843001.jpeg', isNew: true },
-    { id: '2', name: 'Leather Bag', price: 4999, image: 'https://media.istockphoto.com/id/1271796113/photo/women-is-holding-handbag-near-luxury-car.jpg?s=612x612&w=0&k=20&c=-jtXLmexNgRa-eKqA1X8UJ8QYWhW7XgDiWNmzuuCHmM=', isNew: false },
-    { id: '3', name: 'Summer Dress', price: 799, image: 'https://images-cdn.ubuy.co.in/6360014d9a4c66031277d697-summer-dresses-for-women-2022-womens.jpg', isNew: false },
-    { id: '4', name: 'Chino Pants', price: 1029, image: 'https://www.uniqlo.com/jp/ja/contents/feature/masterpiece/common/img/product/item_22_kv.jpg?240711', isNew: true },
-    { id: '5', name: 'Denim Jacket', price:4560, image: 'https://www.uniqlo.com/jp/ja/contents/feature/masterpiece/common/img/product/item_22_kv.jpg?240711', isNew: false },
-    { id: '6', name: 'Sunglasses', price: 1299, image: 'https://5.imimg.com/data5/LM/NU/MY-36086933/men-sunglasses.jpg', isNew: true },
-  ],
-  // Add other categories and their products
-};
-
+// Banner data could also be moved to JSON if needed
 const banners = [
   { id: '1', image: 'https://media.istockphoto.com/id/1271796113/photo/women-is-holding-handbag-near-luxury-car.jpg?s=612x612&w=0&k=20&c=-jtXLmexNgRa-eKqA1X8UJ8QYWhW7XgDiWNmzuuCHmM=' },
   { id: '2', image: 'https://i.imgur.com/UYiroysl.jpg' },
@@ -26,16 +15,136 @@ const banners = [
 ];
 
 const CategoryPage = ({ route }) => {
+  const [sortBy, setSortBy] = useState('newest'); // 'newest', 'price-low-high', 'price-high-low'
+const [showFilters, setShowFilters] = useState(false);
   const { category } = route.params;
   const [searchTerm, setSearchTerm] = useState('');
-  const items = products[category] || [];
-  const filteredItems = items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const [filteredItems, setFilteredItems] = useState([]);
   const navigation = useNavigation();
+  const { addToCart } = useCart();
 
+  // Filter products based on category and search term
+  useEffect(() => {
+    const categoryProducts = productData.products.filter(
+      product => product.category === category
+    );
+
+    if (searchTerm) {
+      const filtered = categoryProducts.filter(item =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredItems(filtered);
+    } else {
+      setFilteredItems(categoryProducts);
+    }
+  }, [category, searchTerm]);
+  const sortProducts = (products) => {
+    switch (sortBy) {
+      case 'price-low-high':
+        return [...products].sort((a, b) => a.price - b.price);
+      case 'price-high-low':
+        return [...products].sort((a, b) => b.price - a.price);
+      case 'newest':
+      default:
+        return products;
+    }
+  };
   const renderBanner = ({ item }) => (
     <View style={styles.bannerContainer}>
       <Image source={{ uri: item.image }} style={styles.bannerImage} />
     </View>
+  );
+
+  const renderProduct = ({ item }) => (
+    <TouchableOpacity
+      style={styles.productCard}
+      onPress={() => navigation.navigate('ProductDetail', { productId: item.id })}
+    >
+      {item.isNew && (
+        <View style={styles.newBadgeContainer}>
+          <Icon name="star" type="material" color="#FFD700" size={14} />
+          <Text style={styles.newBadgeText}>NEW</Text>
+        </View>
+      )}
+      <Image 
+        source={{ uri: item.images[0] }} // Use first image from images array
+        style={styles.productImage} 
+      />
+      <Text style={styles.productName}>{item.name}</Text>
+      <Text style={styles.productPrice}>$ {item.price}</Text>
+      <TouchableOpacity 
+        style={styles.addToBagButton}
+        onPress={() => handleAddToBag(item)}
+      >
+        <Icon 
+          name="add-shopping-cart" 
+          type="material" 
+          color="#ffffff" 
+          size={20} 
+        />
+      </TouchableOpacity>
+    </TouchableOpacity>
+  );
+
+  const handleAddToBag = (item) => {
+    addToCart(item);
+    // Implement add to cart functionality
+    // You can use your CartContext here
+  };
+
+  const ListHeader = () => (
+    <>
+      <View style={styles.header}>
+        <SearchBar
+          placeholder={`Search ${category}`}
+          lightTheme
+          round
+          containerStyle={styles.searchBar}
+          inputContainerStyle={styles.searchInput}
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+        />
+      </View>
+      <View style={styles.filterContainer}>
+  <TouchableOpacity 
+    style={styles.filterButton}
+    onPress={() => setShowFilters(!showFilters)}
+  >
+    <Icon name="filter-list" type="material" size={20} color="#666" />
+    <Text style={styles.filterButtonText}>Filter</Text>
+  </TouchableOpacity>
+  
+  <View style={styles.sortButtons}>
+    <TouchableOpacity 
+      style={[styles.sortButton, sortBy === 'newest' && styles.sortButtonActive]}
+      onPress={() => setSortBy('newest')}
+    >
+      <Text style={styles.sortButtonText}>Newest</Text>
+    </TouchableOpacity>
+    <TouchableOpacity 
+      style={[styles.sortButton, sortBy === 'price-low-high' && styles.sortButtonActive]}
+      onPress={() => setSortBy('price-low-high')}
+    >
+      <Text style={styles.sortButtonText}>Price: Low to High</Text>
+    </TouchableOpacity>
+    <TouchableOpacity 
+      style={[styles.sortButton, sortBy === 'price-high-low' && styles.sortButtonActive]}
+      onPress={() => setSortBy('price-high-low')}
+    >
+      <Text style={styles.sortButtonText}>Price: High to Low</Text>
+    </TouchableOpacity>
+  </View>
+</View>
+      <FlatList
+        data={banners}
+        renderItem={renderBanner}
+        keyExtractor={item => item.id}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        style={styles.bannerList}
+      />
+    </>
   );
 
   return (
@@ -46,52 +155,14 @@ const CategoryPage = ({ route }) => {
           data={filteredItems}
           keyExtractor={(item) => item.id}
           numColumns={2}
-          ListHeaderComponent={
-            <>
-              <View style={styles.header}>
-                <SearchBar
-                  placeholder={`Search ${category}`}
-                  lightTheme
-                  round
-                  containerStyle={styles.searchBar}
-                  inputContainerStyle={styles.searchInput}
-                  value={searchTerm}
-                  onChangeText={setSearchTerm}
-                />
-              </View>
-
-              <FlatList
-                data={banners}
-                renderItem={renderBanner}
-                keyExtractor={item => item.id}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                style={styles.bannerList}
-              />
-            </>
-          }
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.productCard}
-              onPress={() => navigation.navigate('ProductDetail', { product: item })}
-            >
-              {item.isNew && (
-                <View style={styles.newBadgeContainer}>
-                  <Icon name="star" type="material" color="#FFD700" size={14} />
-                  <Text style={styles.newBadgeText}>NEW</Text>
-                </View>
-              )}
-              <Image source={{ uri: item.image }} style={styles.productImage} />
-              <Text style={styles.productName}>{item.name}</Text>
-              <Text style={styles.productPrice}>$ {item.price}</Text>
-              <TouchableOpacity style={styles.addToBagButton}>
-              <Icon name="add-shopping-cart" type="material" color="#FFD700" size={14} />
-                  
-                
-               
-              </TouchableOpacity>
-            </TouchableOpacity>
+          ListHeaderComponent={ListHeader}
+          renderItem={renderProduct}
+          contentContainerStyle={styles.productList}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              <Icon name="search-off" type="material" size={48} color="#999" />
+              <Text style={styles.emptyText}>No products found</Text>
+            </View>
           )}
         />
       </View>
@@ -137,6 +208,9 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: 'cover',
   },
+  productList: {
+    paddingBottom: 20,
+  },
   productCard: {
     flex: 1,
     margin: 10,
@@ -177,28 +251,82 @@ const styles = StyleSheet.create({
   },
   productName: {
     marginTop: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '600',
     color: '#333',
     textAlign: 'center',
   },
   productPrice: {
     marginTop: 5,
     fontSize: 16,
-    color: '#555',
+    color: '#9c6da6',
+    fontWeight: '600',
     textAlign: 'center',
   },
   addToBagButton: {
     marginTop: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 20,
+    padding: 10,
     backgroundColor: '#9c6da6',
     borderRadius: 25,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  addToBagButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 50,
+  },
+  emptyText: {
+    marginTop: 10,
     fontSize: 16,
+    color: '#999',
+    textAlign: 'center',
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    marginTop: 10,
+    marginBottom: 15,
+  },
+  filterButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 8,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  filterButtonText: {
+    marginLeft: 5,
+    color: '#666',
+    fontSize: 14,
+  },
+  sortButtons: {
+    flexDirection: 'row',
+  },
+  sortButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginLeft: 8,
+    borderRadius: 15,
+    backgroundColor: '#f0f0f0',
+  },
+  sortButtonActive: {
+    backgroundColor: 'yellow',
+    color:"yellow"
+  },
+  sortButtonText: {
+    fontSize: 12,
+    color: '#666',
   },
 });
 

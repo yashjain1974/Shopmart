@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'rea
 import { SearchBar } from 'react-native-elements';
 import HeaderPage from './Header';
 import { LinearGradient } from 'expo-linear-gradient';
-const categories = ['Fashion','Departments', 'Grocery', 'Tech', 'Home', 'Deals', 'Electronics', 'Health & Beauty', 'Toys'];
+const categories = ['Fashion','Electronics', 'Health & Beauty', 'Technology', 'Home' ,'Toys','Deals'];
 
 const featuredBanners = [
   { id: '1', title: 'Gifts to Love', image: 'https://cdn.runrepeat.com/storage/gallery/buying_guide_primary/17/17-best-nike-running-shoes-15275034-960.jpg', subtitle: 'Shop Now' },

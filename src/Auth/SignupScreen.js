@@ -12,7 +12,7 @@ const SignupScreen = ({ navigation }) => {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://192.168.242.166:8000/signup/', {
+      const response = await fetch('http://192.168.215.166:8000/signup/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

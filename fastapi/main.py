@@ -6,6 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import hashlib
 import os
 import base64
+from datetime import datetime
+from typing import List, Optional
+from pydantic import BaseModel, validator
 
 # Initialize Firebase Admin SDK with service account
 cred = credentials.Certificate("shopreel-4b398-firebase-adminsdk-20lns-5e2c723abf.json")
@@ -60,6 +63,37 @@ def verify_password(stored_password: str, provided_password: str) -> bool:
         return False
 
 
+class ContentUploadModel(BaseModel):
+    videoUrl: str
+    videoTitle: str
+    category: str
+    description: Optional[str] = ""
+    tags: List[str]
+    shareToFeed: bool
+    productIds: List[str]
+    creatorId: str
+
+    @validator('videoUrl')
+    def validate_video_url(cls, v):
+        if not v:
+            raise ValueError('Video URL is required')
+        # Add additional URL validation if needed
+        return v
+
+    @validator('videoTitle')
+    def validate_title(cls, v):
+        v = v.strip()
+        if not v:
+            raise ValueError('Video title is required')
+        if len(v) > 100:  # Adjust max length as needed
+            raise ValueError('Video title is too long')
+        return v
+
+    @validator('productIds')
+    def validate_product_ids(cls, v):
+        if not v:
+            raise ValueError('At least one product must be selected')
+        return v
 @app.post("/signup/")
 async def signup(user: dict):
     try:
@@ -254,3 +288,205 @@ async def get_reels():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/content/upload/")
+async def upload_content(content: ContentUploadModel):
+    try:
+        # Validate creator exists
+        creator_ref = db.collection("user_details").where("email", "==", content.creatorId).get()
+        if not creator_ref:
+            raise HTTPException(status_code=404, detail="Creator not found")
+
+        # Validate all product IDs exist
+        for product_id in content.productIds:
+            product_ref = db.collection("Product").document(product_id).get()
+            if not product_ref.exists:
+                raise HTTPException(
+                    status_code=404, 
+                    detail=f"Product with ID {product_id} not found"
+                )
+
+        # Prepare content data
+        content_data = {
+            "videoUrl": content.videoUrl,
+            "title": content.videoTitle,
+            "category": content.category,
+            "description": content.description,
+            "tags": content.tags,
+            "sharedToFeed": content.shareToFeed,
+            "productIds": content.productIds,
+            "creatorId": content.creatorId,
+            "createdAt": datetime.now(),
+            "updatedAt": datetime.now(),
+            "status": "active",
+            "likes": 0,
+            "views": 0,
+            "comments": 0
+        }
+
+        # Add to Firestore
+        doc_ref = db.collection("content").add(content_data)
+        content_id = doc_ref[1].id
+
+        # Get product details for response
+        products = []
+        for product_id in content.productIds:
+            product_ref = db.collection("Product").document(product_id).get()
+            if product_ref.exists:
+                product_data = product_ref.to_dict()
+                product_data['id'] = product_id
+                products.append(product_data)
+
+        return {
+            "status": "success",
+            "message": "Content uploaded successfully",
+            "contentId": content_id,
+            "content": {
+                **content_data,
+                "id": content_id,
+                "products": products
+            }
+        }
+
+    except HTTPException as he:
+        raise he
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        print(f"Error uploading content: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred while uploading content"
+        )
+
+
+@app.get("/content/")
+async def get_all_content():
+    try:
+        content_ref = db.collection("content")
+        docs = content_ref.order_by("createdAt", direction=firestore.Query.DESCENDING).stream()
+
+        content_list = []
+        for doc in docs:
+            content_data = doc.to_dict()
+            content_data["id"] = doc.id
+
+            # Get product details for each content
+            products = []
+            for product_id in content_data.get("productIds", []):
+                product_ref = db.collection("Product").document(product_id)
+                product_doc = product_ref.get()
+                if product_doc.exists:
+                    product_data = product_doc.to_dict()
+                    product_data['id'] = product_id
+                    products.append(product_data)
+            
+            content_data["products"] = products
+
+            # Get creator details
+            creator_id = content_data.get("creatorId")
+            if creator_id:
+                creator_ref = db.collection("user_details").document(creator_id)
+                creator_doc = creator_ref.get()
+                if creator_doc.exists:
+                    creator_data = creator_doc.to_dict()
+                    # Remove sensitive information
+                    creator_data.pop("password", None)
+                    content_data["creator"] = creator_data
+
+            content_list.append(content_data)
+
+        return {"content": content_list}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching content: {str(e)}")
+
+@app.get("/content/{content_id}")
+async def get_content_by_id(content_id: str):
+    try:
+        content_ref = db.collection("content").document(content_id)
+        content_doc = content_ref.get()
+
+        if not content_doc.exists:
+            raise HTTPException(status_code=404, detail="Content not found")
+
+        content_data = content_doc.to_dict()
+        content_data["id"] = content_id
+
+        # Get product details
+        products = []
+        for product_id in content_data.get("productIds", []):
+            product_ref = db.collection("Product").document(product_id)
+            product_doc = product_ref.get()
+            if product_doc.exists:
+                product_data = product_doc.to_dict()
+                product_data['id'] = product_id
+                products.append(product_data)
+        
+        content_data["products"] = products
+
+        # Get creator details
+        creator_id = content_data.get("creatorId")
+        if creator_id:
+            creator_ref = db.collection("user_details").document(creator_id)
+            creator_doc = creator_ref.get()
+            if creator_doc.exists:
+                creator_data = creator_doc.to_dict()
+                # Remove sensitive information
+                creator_data.pop("password", None)
+                content_data["creator"] = creator_data
+
+        return {"content": content_data}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching content: {str(e)}")
+
+@app.get("/content/user/{user_id}")
+async def get_user_content(user_id: str):
+    try:
+        content_ref = db.collection("content").where("creatorId", "==", user_id)
+        docs = content_ref.order_by("createdAt", direction=firestore.Query.DESCENDING).stream()
+
+        content_list = []
+        for doc in docs:
+            content_data = doc.to_dict()
+            content_data["id"] = doc.id
+
+            # Get product details
+            products = []
+            for product_id in content_data.get("productIds", []):
+                product_ref = db.collection("Product").document(product_id)
+                product_doc = product_ref.get()
+                if product_doc.exists:
+                    product_data = product_doc.to_dict()
+                    product_data['id'] = product_id
+                    products.append(product_data)
+            
+            content_data["products"] = products
+            content_list.append(content_data)
+
+        return {"content": content_list}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching user content: {str(e)}")
+
+# Optional: Add endpoint for content interaction (likes, views)
+@app.post("/content/{content_id}/interaction")
+async def update_content_interaction(content_id: str, interaction_type: str):
+    try:
+        content_ref = db.collection("content").document(content_id)
+        content_doc = content_ref.get()
+
+        if not content_doc.exists:
+            raise HTTPException(status_code=404, detail="Content not found")
+
+        if interaction_type == "like":
+            content_ref.update({"likes": firestore.Increment(1)})
+        elif interaction_type == "view":
+            content_ref.update({"views": firestore.Increment(1)})
+        else:
+            raise HTTPException(status_code=400, detail="Invalid interaction type")
+
+        return {"status": f"Content {interaction_type} updated successfully"}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating content interaction: {str(e)}")
