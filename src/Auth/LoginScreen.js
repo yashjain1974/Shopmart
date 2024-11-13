@@ -6,10 +6,10 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, skipLogin } = useAuth();
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.215.166:8000/login/', {
+      const response = await fetch(`${API_URL}/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ import axios from 'axios';
 const { width, height } = Dimensions.get("window");
 
 // Replace with your actual backend URL
-const API_URL = 'http://192.168.215.166:8000';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const RenderItem = React.memo(
   ({

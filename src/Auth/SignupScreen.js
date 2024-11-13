@@ -9,10 +9,10 @@ const SignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const { login } = useAuth();
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://192.168.215.166:8000/signup/', {
+      const response = await fetch(`${API_URL}/signup/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
