@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useAuth } from '../store/AuthContext';
-
+import { API_URL } from '@env';
 const SignupScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -9,7 +9,7 @@ const SignupScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const { login } = useAuth();
-  const API_URL = process.env.REACT_APP_API_URL;
+  
   const handleSignup = async () => {
     try {
       const response = await fetch(`${API_URL}/signup/`, {

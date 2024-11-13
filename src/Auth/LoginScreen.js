@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useAuth } from '../store/AuthContext';
-
+import { API_URL } from '@env';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, skipLogin } = useAuth();
-  const API_URL = process.env.REACT_APP_API_URL;
   const handleLogin = async () => {
     try {
       const response = await fetch(`${API_URL}/login/`, {

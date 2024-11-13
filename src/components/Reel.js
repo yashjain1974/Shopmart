@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
+import { API_URL } from '@env';
 import {
   View,
   StyleSheet,
@@ -18,7 +19,6 @@ import axios from 'axios';
 const { width, height } = Dimensions.get("window");
 
 // Replace with your actual backend URL
-const API_URL = process.env.REACT_APP_API_URL;
 
 const RenderItem = React.memo(
   ({
