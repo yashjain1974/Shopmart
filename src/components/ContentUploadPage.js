@@ -21,7 +21,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import productData from '../../assets/data/products.json';
-const API_URL = process.env.REACT_APP_API_URL;
+import { API_URL } from '@env';
 const ProductPickerModal = memo(({ 
   visible, 
   onClose, 

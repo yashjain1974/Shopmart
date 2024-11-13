@@ -1,3 +1,5 @@
+import asyncio
+import cv2
 from fastapi import FastAPI, HTTPException
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -9,10 +11,12 @@ import base64
 from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, validator
+from ultralytics import YOLO
 
 # Initialize Firebase Admin SDK with service account
 cred = credentials.Certificate("shopreel-4b398-firebase-adminsdk-20lns-5e2c723abf.json")
 firebase_admin.initialize_app(cred)
+model = YOLO("yolov8s.pt") 
 
 db = firestore.client()
 
@@ -288,6 +292,20 @@ async def get_reels():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+async def extract_tags(video_url, content_id):
+    # Simulate the long-running task of extracting tags
+    tags = await asyncio.to_thread(extract_objects_yolo_stream, video_url)
+    
+    # After extracting tags, update the content document in the database
+    content_ref = db.collection("content").document(content_id)
+    
+    # Update content with extracted tags
+    content_ref.update({
+        "tags": tags,
+        "updatedAt": datetime.now()  # update the timestamp
+    })
+
+# POST endpoint for uploading content
 @app.post("/content/upload/")
 async def upload_content(content: ContentUploadModel):
     try:
@@ -296,22 +314,14 @@ async def upload_content(content: ContentUploadModel):
         if not creator_ref:
             raise HTTPException(status_code=404, detail="Creator not found")
 
-        # Validate all product IDs exist
-        for product_id in content.productIds:
-            product_ref = db.collection("Product").document(product_id).get()
-            if not product_ref.exists:
-                raise HTTPException(
-                    status_code=404, 
-                    detail=f"Product with ID {product_id} not found"
-                )
+        
 
-        # Prepare content data
+        # Prepare content data without tags
         content_data = {
             "videoUrl": content.videoUrl,
             "title": content.videoTitle,
             "category": content.category,
             "description": content.description,
-            "tags": content.tags,
             "sharedToFeed": content.shareToFeed,
             "productIds": content.productIds,
             "creatorId": content.creatorId,
@@ -320,31 +330,22 @@ async def upload_content(content: ContentUploadModel):
             "status": "active",
             "likes": 0,
             "views": 0,
-            "comments": 0
+            "comments": 0,
+            "tags": []  # Initially empty, will be filled after tag extraction
         }
 
-        # Add to Firestore
+        # Save content to the database first
         doc_ref = db.collection("content").add(content_data)
-        content_id = doc_ref[1].id
+        content_id = doc_ref[1].id  # Get the document ID
 
-        # Get product details for response
-        products = []
-        for product_id in content.productIds:
-            product_ref = db.collection("Product").document(product_id).get()
-            if product_ref.exists:
-                product_data = product_ref.to_dict()
-                product_data['id'] = product_id
-                products.append(product_data)
+        # Create an asyncio task to extract tags asynchronously
+        asyncio.create_task(extract_tags(content.videoUrl, content_id))
 
+        # Return immediately with success response
         return {
             "status": "success",
-            "message": "Content uploaded successfully",
-            "contentId": content_id,
-            "content": {
-                **content_data,
-                "id": content_id,
-                "products": products
-            }
+            "message": "Content uploaded and tag extraction started in the background.",
+            "contentId": content_id
         }
 
     except HTTPException as he:
@@ -357,7 +358,6 @@ async def upload_content(content: ContentUploadModel):
             status_code=500,
             detail="An unexpected error occurred while uploading content"
         )
-
 
 @app.get("/content/")
 async def get_all_content():
@@ -490,3 +490,59 @@ async def update_content_interaction(content_id: str, interaction_type: str):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating content interaction: {str(e)}")
+    
+
+
+
+
+
+
+def extract_objects_yolo_stream(video_url, skip_frames=14):  
+
+    cap = cv2.VideoCapture(video_url)
+
+    
+    if not cap.isOpened():
+        raise Exception("Failed to open video stream")
+
+    detected_objects = {}  
+    frame_count = 0  
+    
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        
+        if frame_count % (skip_frames + 1) == 0: 
+            
+            results = model(frame)
+
+            for result in results:
+                boxes = result.boxes
+                for box in boxes:
+                    
+                    label_id = int(box.cls[0])
+                    label_name = model.names[label_id]
+
+                    
+                    confidence = box.conf[0]
+
+                    
+                    if label_name in detected_objects:
+                       
+                        detected_objects[label_name] = max(detected_objects[label_name], confidence)
+                    else:
+                        detected_objects[label_name] = confidence
+                    
+                    
+        frame_count += 1  
+        
+    cap.release()
+
+    sorted_detected_objects = sorted(detected_objects.items(), key=lambda item: item[1], reverse=True)
+
+    ordered_classes = [item[0] for item in sorted_detected_objects]
+
+    return ordered_classes
