@@ -1,6 +1,6 @@
 import asyncio
 import cv2
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query, Depends
 import firebase_admin
 from firebase_admin import credentials, firestore
 from passlib.context import CryptContext
@@ -9,9 +9,18 @@ import hashlib
 import os
 import base64
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import BaseModel, validator
 from ultralytics import YOLO
+from models.analytics import EngagementEvent, EngagementStats
+from datetime import datetime, timedelta
+from datetime import timezone
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from collections import defaultdict
+import numpy as np
+import uuid
+import traceback
 
 # Initialize Firebase Admin SDK with service account
 cred = credentials.Certificate("shopreel-4b398-firebase-adminsdk-20lns-5e2c723abf.json")
@@ -546,3 +555,329 @@ def extract_objects_yolo_stream(video_url, skip_frames=14):
     ordered_classes = [item[0] for item in sorted_detected_objects]
 
     return ordered_classes
+
+# Add these new models
+class EngagementResponse(BaseModel):
+    status: str
+    event_id: str
+
+class EngagementEvent(BaseModel):
+    content_id: str
+    action: str  # e.g., "video_start", "like", "comment", "share"
+    timestamp: datetime
+    user_id: str
+    metadata: Optional[Dict] = {}
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "content_id": "video123",
+                "action": "video_start",
+                "timestamp": "2024-03-21T10:00:00Z",
+                "user_id": "anonymous",
+                "metadata": {"videoTitle": "Example Video"}
+            }
+        }
+
+class VideoRecommender:
+    def __init__(self):
+        self.vectorizer = TfidfVectorizer()
+        self.engagement_scores = defaultdict(float)
+        self.video_tags = {}
+        print("VideoRecommender initialized")  # Debug log
+
+    def update_engagement(self, video_id: str, tags: List[str], engagement_type: str):
+        # Weight different engagement types
+        engagement_weights = {
+            'watch_time': 1.0,
+            'like': 2.0,
+            'comment': 1.5,
+            'share': 2.5
+        }
+        
+        weight = engagement_weights.get(engagement_type, 1.0)
+        self.engagement_scores[video_id] += weight
+        self.video_tags[video_id] = tags
+
+    async def get_videos_by_ids(video_ids: List[str]):
+        videos = []
+        for vid_id in video_ids:
+            video_ref = db.collection("content").document(vid_id)
+            doc = video_ref.get()
+            if doc.exists:
+                video_data = doc.to_dict()
+                video_data["id"] = vid_id
+                videos.append(video_data)
+        return videos
+
+    def get_recommendations(self, user_id: str, n_recommendations: int = 5):
+        print(f"Getting recommendations for user {user_id}")  # Debug log
+        print(f"Current video tags: {self.video_tags}")  # Debug log
+        print(f"Current engagement scores: {self.engagement_scores}")  # Debug log
+        
+        # If no recommendations are available yet, return empty list
+        if not self.video_tags:
+            print("No video tags available")  # Debug log
+            return []
+            
+        try:
+            # Create tag corpus
+            video_ids = list(self.video_tags.keys())
+            tag_corpus = [' '.join(self.video_tags[vid]) for vid in video_ids]
+            
+            # Calculate tag similarity
+            tfidf_matrix = self.vectorizer.fit_transform(tag_corpus)
+            cosine_sim = cosine_similarity(tfidf_matrix)
+            
+            # Weight similarities by engagement scores
+            weighted_scores = {}
+            for i, vid1 in enumerate(video_ids):
+                score = 0
+                for j, vid2 in enumerate(video_ids):
+                    if i != j:
+                        score += cosine_sim[i][j] * self.engagement_scores[vid2]
+                weighted_scores[vid1] = score
+                
+            # Sort by weighted scores
+            recommended_videos = sorted(
+                weighted_scores.items(), 
+                key=lambda x: x[1], 
+                reverse=True
+            )[:n_recommendations]
+
+            print(recommended_videos)
+            
+            return [vid for vid, _ in recommended_videos]
+        except Exception as e:
+            print(f"Error in recommendation algorithm: {str(e)}")  # Debug log
+            return []
+
+# Initialize the recommender at startup
+@app.on_event("startup")
+async def startup_event():
+    app.recommender = VideoRecommender()
+    print("Recommender initialized during startup")  # Debug log
+
+@app.post("/analytics/engagement/")
+async def track_engagement(event: EngagementEvent):
+    if event.action == 'meaningful_engagement':
+        app.recommender.update_engagement(
+            event.content_id,
+            event.metadata.get('tags', []),
+            event.metadata.get('engagementType')
+        )
+    return {"status": "success", "event_id": str(uuid.uuid4())}
+
+@app.get("/analytics/content/{content_id}")
+async def get_content_analytics(content_id: str, days: int = 7):
+    try:
+        # Calculate the date range
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+
+        # Query analytics events for the content
+        analytics_ref = db.collection("analytics")
+        events = analytics_ref.where("content_id", "==", content_id)\
+                            .where("timestamp", ">=", start_date)\
+                            .where("timestamp", "<=", end_date)\
+                            .stream()
+
+        # Initialize counters
+        stats = {
+            "views": 0,
+            "likes": 0,
+            "comments": 0,
+            "shares": 0,
+            "total_watch_duration": 0,
+            "completed_views": 0,
+            "watch_durations": [],
+            "engagement_by_hour": {},
+            "completion_rates": []
+        }
+
+        # Process events
+        for event in events:
+            event_data = event.to_dict()
+            action = event_data.get("action")
+            metadata = event_data.get("metadata", {})
+            
+            # Track basic metrics
+            if action == "video_start":
+                stats["views"] += 1
+            elif action == "like":
+                stats["likes"] += 1
+            elif action == "comment":
+                stats["comments"] += 1
+            elif action == "share":
+                stats["shares"] += 1
+            
+            # Track watch duration
+            if action == "video_end" and "watchDuration" in metadata:
+                duration = metadata["watchDuration"]
+                stats["watch_durations"].append(duration)
+                stats["total_watch_duration"] += duration
+                
+                # Track completion
+                if "completionRate" in metadata:
+                    stats["completion_rates"].append(metadata["completionRate"])
+                    if metadata["completionRate"] >= 95:  # Consider 95% or more as completed
+                        stats["completed_views"] += 1
+
+            # Track engagement by hour
+            hour = event_data["timestamp"].hour
+            stats["engagement_by_hour"][hour] = stats["engagement_by_hour"].get(hour, 0) + 1
+
+        # Calculate averages and rates
+        total_events = len(stats["watch_durations"])
+        response = {
+            "content_id": content_id,
+            "period_days": days,
+            "total_views": stats["views"],
+            "total_likes": stats["likes"],
+            "total_comments": stats["comments"],
+            "total_shares": stats["shares"],
+            "avg_watch_duration": stats["total_watch_duration"] / total_events if total_events > 0 else 0,
+            "completion_rate": (stats["completed_views"] / stats["views"] * 100) if stats["views"] > 0 else 0,
+            "engagement_rate": ((stats["likes"] + stats["comments"] + stats["shares"]) / stats["views"] * 100) if stats["views"] > 0 else 0,
+            "engagement_by_hour": stats["engagement_by_hour"]
+        }
+
+        return response
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching analytics: {str(e)}")
+
+@app.get("/analytics/user/{user_id}")
+async def get_user_analytics(user_id: str, days: int = 7):
+    try:
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+
+        # Get all content IDs for the user
+        content_ref = db.collection("content").where("creatorId", "==", user_id).stream()
+        content_ids = [doc.id for doc in content_ref]
+
+        # Get analytics for all user content
+        analytics_ref = db.collection("analytics")
+        events = analytics_ref.where("content_id", "in", content_ids)\
+                            .where("timestamp", ">=", start_date)\
+                            .where("timestamp", "<=", end_date)\
+                            .stream()
+
+        # Initialize analytics summary
+        summary = {
+            "total_views": 0,
+            "total_likes": 0,
+            "total_comments": 0,
+            "total_shares": 0,
+            "content_performance": {},
+            "engagement_by_day": {},
+            "top_performing_content": []
+        }
+
+        # Process events
+        for event in events:
+            event_data = event.to_dict()
+            content_id = event_data["content_id"]
+            action = event_data["action"]
+            day = event_data["timestamp"].date().isoformat()
+
+            # Initialize content metrics if needed
+            if content_id not in summary["content_performance"]:
+                summary["content_performance"][content_id] = {
+                    "views": 0, "likes": 0, "comments": 0, "shares": 0
+                }
+
+            # Update metrics
+            if action == "video_start":
+                summary["total_views"] += 1
+                summary["content_performance"][content_id]["views"] += 1
+            elif action == "like":
+                summary["total_likes"] += 1
+                summary["content_performance"][content_id]["likes"] += 1
+            elif action == "comment":
+                summary["total_comments"] += 1
+                summary["content_performance"][content_id]["comments"] += 1
+            elif action == "share":
+                summary["total_shares"] += 1
+                summary["content_performance"][content_id]["shares"] += 1
+
+            # Track daily engagement
+            if day not in summary["engagement_by_day"]:
+                summary["engagement_by_day"][day] = {
+                    "views": 0, "likes": 0, "comments": 0, "shares": 0
+                }
+            summary["engagement_by_day"][day][action] = summary["engagement_by_day"][day].get(action, 0) + 1
+
+        # Calculate top performing content
+        for content_id, metrics in summary["content_performance"].items():
+            engagement_score = metrics["views"] + (metrics["likes"] * 2) + (metrics["comments"] * 3) + (metrics["shares"] * 4)
+            summary["top_performing_content"].append({
+                "content_id": content_id,
+                "metrics": metrics,
+                "engagement_score": engagement_score
+            })
+
+        # Sort top performing content
+        summary["top_performing_content"].sort(key=lambda x: x["engagement_score"], reverse=True)
+        summary["top_performing_content"] = summary["top_performing_content"][:5]  # Keep top 5
+
+        return {
+            "user_id": user_id,
+            "period_days": days,
+            "analytics_summary": summary
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching user analytics: {str(e)}")
+
+@app.get("/content/recommendations/")
+async def get_recommendations(user_id: str = Query(default=..., description="User ID to get recommendations for")):
+    try:
+        print(f"Fetching recommendations for user: {user_id}")  # Debug log
+        
+        # Check if recommender is initialized
+        if not hasattr(app, 'recommender'):
+            print("Initializing recommender")
+            app.recommender = VideoRecommender()
+            
+        # Get recommendations
+        recommended_video_ids = app.recommender.get_recommendations(user_id)
+        print(f"Got recommended video IDs: {recommended_video_ids}")  # Debug log
+        
+        # If no recommendations, return empty list
+        if not recommended_video_ids:
+            print("No recommendations found")
+            return {"content": []}
+            
+        videos = []
+        for vid_id in recommended_video_ids:
+            try:
+                video_ref = db.collection("content").document(vid_id)
+                doc = video_ref.get()
+                if doc.exists:
+                    video_data = doc.to_dict()
+                    video_data["id"] = vid_id
+                    video_data["isRecommended"] = True
+                    videos.append(video_data)
+                    print(f"Added video: {vid_id}")  # Debug log
+                else:
+                    print(f"Video not found: {vid_id}")  # Debug log
+            except Exception as e:
+                print(f"Error fetching video {vid_id}: {str(e)}")  # Debug log
+                continue
+        
+        print(f"Returning {len(videos)} recommendations")  # Debug log
+        return {"content": videos}
+        
+    except Exception as e:
+        error_details = traceback.format_exc()
+        print(f"Error in get_recommendations: {str(e)}")
+        print(f"Traceback: {error_details}")
+        raise HTTPException(
+            status_code=500, 
+            detail={
+                "error": str(e),
+                "traceback": error_details
+            }
+        )
