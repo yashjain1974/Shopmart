@@ -11,12 +11,11 @@ class AnalyticsService {
         timestamp: new Date().toISOString(),
         user_id: 'anonymous',
         metadata: metadata
-      };
-
+      };     
       const response = await axios.post(`${API_URL}/analytics/engagement/`, payload);
       return response.data;
     } catch (error) {
-      console.error('Analytics Error:', error);
+      console.error('Analytics Error3:', error);
     }
   }
 
@@ -25,17 +24,17 @@ class AnalyticsService {
       const response = await axios.get(`${API_URL}/analytics/content/${contentId}?days=${days}`);
       return response.data;
     } catch (error) {
-      console.error('Analytics Error:', error);
+      console.error('Analytics Error2:', error);
       return null;
     }
   }
 
-  static async getUserAnalytics(userId, days = 7) {
+  static async getUserAnalytics(userId, days = 7) {    
     try {
       const response = await axios.get(`${API_URL}/analytics/user/${userId}?days=${days}`);
       return response.data;
     } catch (error) {
-      console.error('Analytics Error:', error);
+      console.error('Analytics Error1:', error);
       return null;
     }
   }
