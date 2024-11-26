@@ -8,9 +8,9 @@
         "color": "Navy Blue",
         "availableColors": ["Navy Blue", "Light Grey", "Black"],
         "images": [
-          "https://example.com/gucci-jacket-1.jpg",
-          "https://example.com/gucci-jacket-2.jpg",
-          "https://example.com/gucci-jacket-3.jpg"
+          "https://i.pinimg.com/736x/0b/9c/42/0b9c42cd49ac75fa3c0b9774d02fa580.jpg",
+          "https://i.pinimg.com/736x/e9/76/24/e97624c306e97c663ed9a5c0a56a7b88.jpg",
+          "https://i.pinimg.com/736x/27/93/04/27930430b8ead1de56f34d7be52cca58.jpg"
         ],
         "details": [
           "Horsebit zipped track jacket",
@@ -39,13 +39,13 @@
             "id": "2",
             "name": "Gucci White Pants",
             "price": 1250,
-            "image": "https://example.com/gucci-pants.jpg"
+            "image": "https://i.pinimg.com/736x/fd/ba/55/fdba550e0e76c097e00e31a1a5268a7e.jpg"
           },
           {
             "id": "3",
             "name": "Gucci Leather Belt",
             "price": 550,
-            "image": "https://example.com/gucci-belt.jpg"
+            "image": "https://i.pinimg.com/736x/41/6a/e4/416ae4fe2884ca58953c54dfa6bb47d2.jpg"
           }
         ]
       },
@@ -57,9 +57,9 @@
         "color": "Brown",
         "availableColors": ["Brown", "Black", "Cream"],
         "images": [
-          "https://example.com/lv-bag-1.jpg",
-          "https://example.com/lv-bag-2.jpg",
-          "https://example.com/lv-bag-3.jpg"
+          "https://i.pinimg.com/736x/d8/d3/1d/d8d31da56f6bf4de4f33108a3253f299.jpg",
+          "https://i.pinimg.com/736x/be/e7/34/bee734f233e7938e8a9cde72bc28ae28.jpg",
+          "https://i.pinimg.com/736x/4d/d6/c3/4dd6c3a429f763a3463bd6d9d97b76d5.jpg"
         ],
         "details": [
           "Monogram canvas",
@@ -88,7 +88,7 @@
             "id": "4",
             "name": "LV Wallet",
             "price": 850,
-            "image": "https://example.com/lv-wallet.jpg"
+            "image": "https://i.pinimg.com/736x/9f/2c/49/9f2c4976df5c1bb1e5c619587316d947.jpg"
           }
         ]
       },
@@ -100,9 +100,8 @@
         "color": "Space Gray",
         "availableColors": ["Space Gray", "Silver"],
         "images": [
-          "https://example.com/macbook-1.jpg",
-          "https://example.com/macbook-2.jpg",
-          "https://example.com/macbook-3.jpg"
+          "https://i.pinimg.com/736x/90/97/ed/9097ed443cdf99cc7ded923061db18f4.jpg",
+          "https://i.pinimg.com/736x/56/fe/ca/56feca4db069f8197495bdf476b5d493.jpg"
         ],
         "details": [
           "14-inch Liquid Retina XDR display",
@@ -131,7 +130,7 @@
             "id": "5",
             "name": "Magic Mouse",
             "price": 99,
-            "image": "https://example.com/magic-mouse.jpg"
+            "image": "https://i.pinimg.com/736x/3c/aa/95/3caa9501412a303111d8c9912740cb5a.jpg"
           }
         ]
       },
@@ -143,8 +142,9 @@
         "color": "Black",
         "availableColors": ["Black", "Silver", "Midnight Blue"],
         "images": [
-          "https://example.com/sony-headphones-1.jpg",
-          "https://example.com/sony-headphones-2.jpg"
+          "https://i.pinimg.com/736x/56/b5/24/56b524f5151bddc6fb07d37bae7e644d.jpg",
+          "https://i.pinimg.com/736x/71/fb/ce/71fbce3419478da6573ea9c9d032f68a.jpg",
+          "https://i.pinimg.com/736x/3d/3c/80/3d3c8040ec43ba87cac321444acd6306.jpg"
         ],
         "details": [
           "Industry-leading noise canceling",
@@ -173,7 +173,7 @@
             "id": "6",
             "name": "Headphone Stand",
             "price": 49,
-            "image": "https://example.com/headphone-stand.jpg"
+            "image": "https://i.pinimg.com/736x/3a/a5/0a/3aa50a593e1366766c5a01327275def0.jpg"
           }
         ]
       },
@@ -183,10 +183,7 @@
         "name": "La Mer Moisturizing Cream",
         "price": 350,
         "color": "N/A",
-        "images": [
-          "https://example.com/lamer-1.jpg",
-          "https://example.com/lamer-2.jpg"
-        ],
+        "images": "https://i.pinimg.com/736x/24/e9/6f/24e96f0c2954232d764f288cb65bfba0.jpg",
         "details": [
           "Ultra-rich moisturizing cream",
           "Contains Miracle Broth™",
@@ -211,7 +208,7 @@
             "id": "7",
             "name": "La Mer Toner",
             "price": 150,
-            "image": "https://example.com/lamer-toner.jpg"
+            "image": "https://i.pinimg.com/736x/60/6d/b8/606db8cd2fb8f0ff990c637ccc5035d6.jpg"
           }
         ]
       },
@@ -221,10 +218,7 @@
         "name": "LEGO Star Wars Millennium Falcon",
         "price": 159.99,
         "color": "Multi",
-        "images": [
-          "https://example.com/lego-falcon-1.jpg",
-          "https://example.com/lego-falcon-2.jpg"
-        ],
+        "images": "https://i.pinimg.com/736x/b7/8b/7a/b78b7a5d4c7acc86c98a7897bc918154.jpg",
         "details": [
           "1,351 pieces",
           "7 minifigures included",
@@ -247,7 +241,7 @@
             "id": "8",
             "name": "LEGO Display Stand",
             "price": 29.99,
-            "image": "https://example.com/lego-stand.jpg"
+            "image": "https://i.pinimg.com/736x/2f/15/f3/2f15f3813c9b65e00723c37bba1d0953.jpg"
           }
         ]
       },
@@ -259,8 +253,8 @@
         "color": "Silver",
         "availableColors": ["Silver", "Space Gray"],
         "images": [
-          "https://example.com/ipad-pro-1.jpg",
-          "https://example.com/ipad-pro-2.jpg"
+          "https://i.pinimg.com/736x/c3/6d/80/c36d80cc59462dde071d5c8b51b25027.jpg",
+          "https://i.pinimg.com/736x/1c/68/e1/1c68e188b3f93a068f05457acd3e6106.jpg"
         ],
         "details": [
           "12.9-inch Liquid Retina XDR display",
@@ -301,8 +295,8 @@
         "color": "Black",
         "availableColors": ["Nickel/Copper", "Prussian Blue/Rich Copper"],
         "images": [
-          "https://example.com/samsung-tv-1.jpg",
-          "https://example.com/samsung-tv-2.jpg"
+          "https://i.pinimg.com/736x/82/14/53/8214536edc704ad512d39a9143089c87.jpg",
+          "https://i.pinimg.com/736x/d4/30/f0/d430f030c73137b9df746289c1337c77.jpg"
         ],
         "details": [
           "Quantum HDR",
@@ -330,7 +324,7 @@
             "id": "10",
             "name": "Samsung Soundbar",
             "price": 399,
-            "image": "https://example.com/soundbar.jpg"
+            "image": "https://i.pinimg.com/736x/95/4f/b2/954fb2670429dc50901d6447e711a9c5.jpg"
           }
         ]
       },
@@ -342,8 +336,8 @@
         "color": "Nickel/Copper",
         "availableColors": ["Nickel/Copper", "Prussian Blue/Rich Copper"],
         "images": [
-          "https://example.com/airwrap-1.jpg",
-          "https://example.com/airwrap-2.jpg"
+          "https://i.pinimg.com/736x/c8/12/bd/c812bd866bcdf786869ed5ddb7d5005d.jpg",
+          "https://i.pinimg.com/736x/0f/e0/a4/0fe0a471f8fa28185af3472a12625bd1.jpg"
         ],
         "details": [
           "Multiple styling attachments",
@@ -369,7 +363,7 @@
             "id": "11",
             "name": "Dyson Travel Case",
             "price": 49,
-            "image": "https://example.com/dyson-case.jpg"
+            "image": "https://i.pinimg.com/736x/1f/6e/65/1f6e6506b86a2daa688d3820c0617486.jpg"
           }
         ]
       },
@@ -381,8 +375,8 @@
         "color": "White",
         "availableColors": ["White", "Neon Red/Blue"],
         "images": [
-          "https://example.com/switch-1.jpg",
-          "https://example.com/switch-2.jpg"
+          "https://i.pinimg.com/736x/15/1b/7c/151b7c8c041b1fa5aa1942f4d0b4ef9e.jpg",
+          "https://i.pinimg.com/736x/ca/2d/00/ca2d002f3e0c82cbafc811491770c6cd.jpg"
         ],
         "details": [
           "7-inch OLED screen",
@@ -410,7 +404,7 @@
             "id": "12",
             "name": "Pro Controller",
             "price": 69.99,
-            "image": "https://example.com/pro-controller.jpg"
+            "image": "https://i.pinimg.com/736x/e8/68/6d/e8686db70a480ad7c1a368e29bbdc018.jpg"
           }
         ]
       }
